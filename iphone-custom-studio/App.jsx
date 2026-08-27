@@ -922,7 +922,7 @@ export default function App() {
         <AdminPanel
           t={t} S={S} dark={dark}
           authed={adminAuthed} pw={adminPw} setPw={setAdminPw}
-          onAuth={() => setAdminAuthed(adminPw === "admin123")}
+          onAuth={() => { setAdminAuthed(false); window.alert("Admin access is temporarily disabled until secure server authentication is configured."); }}
           onClose={() => setAdminOpen(false)}
           tab={adminTab} setTab={setAdminTab}
           models={models} addModel={addModel} updateModel={updateModel} deleteModel={deleteModel}
@@ -1392,7 +1392,7 @@ function AdminPanel({ t, S, dark, authed, pw, setPw, onAuth, onClose, tab, setTa
       <Drawer onClose={onClose} title="Admin Settings" t={t} dark={dark}>
         <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
           <p style={{ fontSize: 12.5, color: t.muted }}><Lock size={13} style={{ verticalAlign: -2 }} /> Enter the admin password to manage models, accessories, and saved designs.</p>
-          <input style={S.input} type="password" placeholder="Password (hint: admin123)" value={pw} onChange={e => setPw(e.target.value)} onKeyDown={e => e.key === "Enter" && onAuth()} />
+          <input style={S.input} type="password" placeholder="Admin access disabled" disabled value={pw} onChange={e => setPw(e.target.value)} onKeyDown={e => e.key === "Enter" && onAuth()} />
           <button style={S.btnPrimary} onClick={onAuth}>Unlock</button>
         </div>
       </Drawer>

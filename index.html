@@ -1370,18 +1370,8 @@
     adminToggle.classList.remove('spin');
     scheduleNext();
   }
-  const ADMIN_PASSWORD_HASH = '146cc3f506268341f314c63b142b26534d09e6ec925a9f22f3214d65bbbf4e88';
   async function requestAdminAccess(){
-    const password = window.prompt('Enter the owner/admin password to open Settings:');
-    if (password === null) return;
-    const bytes = new TextEncoder().encode(password);
-    const digest = await crypto.subtle.digest('SHA-256', bytes);
-    const hash = Array.from(new Uint8Array(digest), byte => byte.toString(16).padStart(2,'0')).join('');
-    if (hash !== ADMIN_PASSWORD_HASH){
-      window.alert('Incorrect password. Settings remain locked.');
-      return;
-    }
-    openAdmin();
+    window.alert('Admin settings are temporarily disabled until secure server authentication is configured.');
   }
   adminToggle.addEventListener('click', requestAdminAccess);
   adminClose.addEventListener('click', closeAdmin);
