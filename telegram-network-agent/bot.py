@@ -9,11 +9,18 @@ from pathlib import Path
 
 import yaml
 from dotenv import load_dotenv
-from telegram import Update
-from telegram.ext import Application, CommandHandler, ContextTypes, MessageHandler, filters
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
+from telegram.ext import (
+    Application,
+    CallbackQueryHandler,
+    CommandHandler,
+    ContextTypes,
+    MessageHandler,
+    filters,
+)
 
-from agent import compose_reply, parse_complaint
-from network import MikroTikReadOnly, Router, ruijie_status
+from agent import answer_internet_question, compose_reply, parse_complaint
+from network import MikroTikReadOnly, Router
 
 load_dotenv()
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
@@ -54,20 +61,29 @@ ROUTERS = load_routers()
 
 
 def authorized(update: Update) -> bool:
+    """Allow anyone inside an approved customer chat, or an explicitly approved user."""
     if not ALLOWED_CHATS and not ALLOWED_USERS:
         return False
     if not update.effective_chat or not update.effective_user:
         return False
-    chat_ok = not ALLOWED_CHATS or update.effective_chat.id in ALLOWED_CHATS
-    user_ok = not ALLOWED_USERS or update.effective_user.id in ALLOWED_USERS
-    return chat_ok and user_ok
+    return (
+        update.effective_chat.id in ALLOWED_CHATS
+        or update.effective_user.id in ALLOWED_USERS
+    )
 
 
-def find_router(wifi: str) -> Router | None:
+def router_visible_to_chat(router: Router, chat_id: int) -> bool:
+    return not router.allowed_chat_ids or chat_id in set(router.allowed_chat_ids)
+
+
+def find_router(wifi: str, chat_id: int) -> tuple[Router, str] | None:
     value = wifi.casefold().strip()
     for router in ROUTERS:
-        if any(value == name.casefold() for name in router.wifi_names):
-            return router
+        if not router_visible_to_chat(router, chat_id):
+            continue
+        for name in router.wifi_names:
+            if value == name.casefold().strip():
+                return router, name
     return None
 
 
@@ -75,114 +91,200 @@ def router_key(router: Router) -> str:
     return f"{router.host}:{router.port}:{router.wan_interface}"
 
 
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if not authorized(update):
-        await update.message.reply_text("This bot is restricted to authorized staff.")
+def wifi_keyboard(chat_id: int) -> InlineKeyboardMarkup | None:
+    buttons: list[InlineKeyboardButton] = []
+    for router_index, router in enumerate(ROUTERS):
+        if not router_visible_to_chat(router, chat_id):
+            continue
+        for wifi_index, wifi in enumerate(router.wifi_names):
+            buttons.append(
+                InlineKeyboardButton(
+                    text=f"📶 {wifi}",
+                    callback_data=f"wifi:{router_index}:{wifi_index}",
+                )
+            )
+    if not buttons:
+        return None
+    rows = [buttons[i : i + 2] for i in range(0, len(buttons), 2)]
+    return InlineKeyboardMarkup(rows)
+
+
+async def show_wifi_menu(message, chat_id: int) -> None:
+    keyboard = wifi_keyboard(chat_id)
+    if keyboard is None:
+        await message.reply_text("No Wi-Fi service is configured for this chat yet.")
         return
-    await update.message.reply_text(
-        "Send /check followed by the Wi-Fi name. I perform read-only MikroTik "
-        "and Ruijie/Reyee checks. I cannot reboot, disconnect, or change settings."
+    await message.reply_text(
+        "Which Wi-Fi would you like me to check?",
+        reply_markup=keyboard,
     )
 
 
-async def check_wifi(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if not authorized(update):
-        await update.message.reply_text("This network check is restricted to authorized staff.")
-        return
-
-    wifi = " ".join(context.args).strip()
-    if not wifi:
-        await update.message.reply_text("Please use: /check WiFi Name")
-        return
-
-    router = find_router(wifi)
-    if not router:
-        await update.message.reply_text("I cannot find that Wi-Fi name. Please check the spelling.")
-        return
-
+async def run_router_check(message, router: Router, wifi: str) -> None:
     key = router_key(router)
     lock = ROUTER_LOCKS.setdefault(key, asyncio.Lock())
 
     if lock.locked():
-        await update.message.reply_text(
-            "A safe read-only check is already running for this router. Please wait."
+        await message.reply_text(
+            "A safe read-only check is already running for this Wi-Fi. Please wait."
         )
         return
 
     remaining = CHECK_COOLDOWN_SECONDS - (time.monotonic() - LAST_CHECK_AT.get(key, 0.0))
     if remaining > 0:
-        await update.message.reply_text(
+        await message.reply_text(
             f"Safety cooldown active. Please wait {int(remaining) + 1} seconds before checking again."
         )
         return
 
     async with lock:
         LAST_CHECK_AT[key] = time.monotonic()
-        await update.message.reply_text("Checking traffic and device status (read-only)…")
-        client = MikroTikReadOnly(router)
+        await message.reply_text(f"Checking {wifi} safely (read-only)…")
+        client: MikroTikReadOnly | None = None
         try:
+            client = MikroTikReadOnly(router)
             traffic = await client.sample_traffic()
-            cloud = await ruijie_status(router.ruijie_project_id)
-            await update.message.reply_text(
-                compose_reply(router.customer_name, wifi, traffic, cloud)
-            )
+            await message.reply_text(compose_reply(router.customer_name, wifi, traffic))
         except Exception as exc:
-            logging.error("Read-only network check failed: %s", type(exc).__name__)
-            await update.message.reply_text(
-                f"I could not complete the safe read-only check: {type(exc).__name__}."
+            logging.error("Read-only MikroTik check failed: %s", type(exc).__name__)
+            await message.reply_text(
+                "I could not complete the safe Internet check right now. "
+                "No router settings were changed. Please contact support if the problem continues."
             )
         finally:
-            await client.close()
+            if client is not None:
+                await client.close()
 
 
-async def routers(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     if not authorized(update):
         return
-    names = [", ".join(r.wifi_names) for r in ROUTERS]
-    await update.message.reply_text("Configured Wi-Fi names:\n" + "\n".join(names))
+    await update.message.reply_text(
+        "Hello 👋 I am your Internet/Wi-Fi support bot. I can answer Internet questions "
+        "and safely check MikroTik connection status. I cannot reboot, disconnect, or change router settings."
+    )
+    await show_wifi_menu(update.message, update.effective_chat.id)
 
 
-async def natural_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def check_wifi(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    if not authorized(update):
+        return
+
+    wifi = " ".join(context.args).strip()
+    if not wifi:
+        await show_wifi_menu(update.message, update.effective_chat.id)
+        return
+
+    found = find_router(wifi, update.effective_chat.id)
+    if not found:
+        await update.message.reply_text("I cannot find that Wi-Fi name. Please choose from the buttons.")
+        await show_wifi_menu(update.message, update.effective_chat.id)
+        return
+
+    router, canonical_wifi = found
+    await run_router_check(update.message, router, canonical_wifi)
+
+
+async def routers(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    if not authorized(update):
+        return
+    await show_wifi_menu(update.message, update.effective_chat.id)
+
+
+async def wifi_button(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    if not authorized(update) or not update.callback_query:
+        return
+
+    query = update.callback_query
+    await query.answer()
+    if not query.message or not query.data:
+        return
+
+    try:
+        _, router_index_raw, wifi_index_raw = query.data.split(":", 2)
+        router_index = int(router_index_raw)
+        wifi_index = int(wifi_index_raw)
+        router = ROUTERS[router_index]
+        wifi = router.wifi_names[wifi_index]
+    except (ValueError, IndexError):
+        await query.message.reply_text("That Wi-Fi button is no longer valid. Please try again.")
+        return
+
+    if not router_visible_to_chat(router, update.effective_chat.id):
+        await query.message.reply_text("That Wi-Fi is not available in this chat.")
+        return
+
+    await run_router_check(query.message, router, wifi)
+
+
+async def natural_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     if not authorized(update) or not update.message or not update.message.text:
         return
-    complaint = parse_complaint(
-        update.message.text, [n for r in ROUTERS for n in r.wifi_names]
-    )
-    if complaint.is_slow and complaint.wifi_name:
-        context.args = complaint.wifi_name.split()
-        await check_wifi(update, context)
-    elif complaint.is_slow:
-        await update.message.reply_text("Please tell me the Wi-Fi name so I can check it.")
+
+    text = update.message.text.strip()
+    chat_id = update.effective_chat.id
+
+    # If the customer typed an exact Wi-Fi name after being asked, check it directly.
+    exact = find_router(text, chat_id)
+    if exact:
+        router, wifi = exact
+        await run_router_check(update.message, router, wifi)
+        return
+
+    visible_names = [
+        name
+        for router in ROUTERS
+        if router_visible_to_chat(router, chat_id)
+        for name in router.wifi_names
+    ]
+    complaint = parse_complaint(text, visible_names)
+
+    if complaint.needs_check:
+        if complaint.wifi_name:
+            found = find_router(complaint.wifi_name, chat_id)
+            if found:
+                router, wifi = found
+                await run_router_check(update.message, router, wifi)
+                return
+        await show_wifi_menu(update.message, chat_id)
+        return
+
+    reply = await answer_internet_question(text)
+    await update.message.reply_text(reply)
 
 
 def validate_configuration() -> None:
     if not ALLOWED_CHATS and not ALLOWED_USERS:
-        raise RuntimeError(
-            "At least one Telegram allow-list must be configured before the bot can start"
-        )
+        raise RuntimeError("At least one Telegram chat or user allow-list must be configured")
     if not ROUTERS:
-        raise RuntimeError("No routers are configured")
+        raise RuntimeError("No MikroTik routers are configured")
+    if not os.getenv("MIKROTIK_USERNAME", "").strip():
+        raise RuntimeError("MIKROTIK_USERNAME is missing")
+    if not os.getenv("MIKROTIK_PASSWORD", "").strip():
+        raise RuntimeError("MIKROTIK_PASSWORD is missing")
+
     for router in ROUTERS:
-        transport = (router.transport or "api_ssl").strip().lower()
-        if transport == "api_ssl" and router.port == 8728:
-            raise RuntimeError(
-                "Unsafe MikroTik configuration: api_ssl cannot use plaintext API port 8728"
-            )
-        if transport == "rest" and router.port == 8729:
-            raise RuntimeError(
-                "Invalid MikroTik configuration: REST cannot use API-SSL port 8729"
-            )
+        if not router.host.strip():
+            raise RuntimeError("A MikroTik router host is missing")
+        if not router.wifi_names:
+            raise RuntimeError("A MikroTik router has no Wi-Fi names")
+        if router.port == 8728:
+            raise RuntimeError("Plaintext MikroTik API port 8728 is not allowed")
+        if (router.transport or "api_ssl").strip().lower() != "api_ssl":
+            raise RuntimeError("Only encrypted MikroTik API-SSL is allowed")
 
 
-def main():
+def main() -> None:
     validate_configuration()
-    token = os.getenv("TELEGRAM_BOT_TOKEN")
+    token = os.getenv("TELEGRAM_BOT_TOKEN", "").strip()
     if not token:
         raise RuntimeError("TELEGRAM_BOT_TOKEN is missing")
+
     app = Application.builder().token(token).build()
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("check", check_wifi))
     app.add_handler(CommandHandler("routers", routers))
+    app.add_handler(CallbackQueryHandler(wifi_button, pattern=r"^wifi:\d+:\d+$"))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, natural_message))
     app.run_polling(allowed_updates=Update.ALL_TYPES)
 
