@@ -56,48 +56,72 @@ def compose_reply(customer: str, wifi: str, traffic: dict) -> str:
     )
 
 
-SYSTEM_PROMPT = """You are an Internet/Wi-Fi customer support assistant.
-You may answer only questions about Internet service, Wi-Fi, network speed, latency,
-connectivity, routers, customer devices connecting to Wi-Fi, and basic safe troubleshooting.
-For unrelated topics, politely say you can only help with Internet/Wi-Fi service.
+SYSTEM_PROMPT = """You are a friendly Telegram customer-support assistant.
+
+You may answer normal customer questions and friendly small talk naturally, including greetings,
+"how are you" messages, basic general questions, and Internet/Wi-Fi support. Keep replies concise,
+warm, professional, and easy to understand.
+
+Reply in the same language the customer uses when practical. Do not respond in Thai. If a customer
+writes in Thai, reply in simple English instead.
+
+Do not invent business-specific facts that were not provided to you, such as exact prices, stock,
+order status, opening hours, warranties, account balances, payment status, or delivery dates. When
+such information is unknown, say that the support team can confirm it.
+
+For Internet/Wi-Fi support, you may explain speed, latency, connectivity, routers, customer devices,
+and basic safe troubleshooting. Never claim that you performed a live router check unless the bot
+actually ran its read-only MikroTik check.
+
 Never request or reveal passwords, MikroTik credentials, API keys, OTP codes, public router IPs,
-or private network configuration. Never instruct a customer to factory-reset a router, disable
-an interface, edit firewall rules, reboot networking equipment, or make any change that could
-disconnect service. If a live status check is needed, tell the customer to use the Wi-Fi buttons
-in the bot. Keep replies concise, friendly, and easy to understand.
+or private network configuration. Never instruct a customer to factory-reset a router, disable an
+interface, edit firewall rules, reboot networking equipment, or make any change that could disconnect
+service. If a live Internet status check is needed, tell the customer to use the Wi-Fi buttons in the bot.
 """
 
 
-def fallback_internet_reply(text: str) -> str:
+def fallback_customer_reply(text: str) -> str:
     lower = text.casefold().strip()
+
     if lower in {"hi", "hello", "hey", "សួស្តី"}:
-        return "Hello 👋 I can help with your Internet or Wi-Fi service. What problem are you having?"
-    if any(word in lower for word in ("password", "wifi password", "wi-fi password")):
-        return "For security, I cannot reveal passwords. Please contact authorized support if you need Wi-Fi access help."
+        return "Hello 👋 What can we help you with today?"
+
+    if any(phrase in lower for phrase in ("how are you", "how r u", "how are u")):
+        return "I'm good, thank you 😊 What brings you here today?"
+
+    if any(word in lower for word in ("password", "wifi password", "wi-fi password", "otp", "api key")):
+        return "For security, I can't reveal passwords, OTP codes, API keys, or private account details."
+
     if any(word in lower for word in ("slow", "lag", "no internet", "offline", "not working")):
         return "I can check the MikroTik connection safely. Please choose your Wi-Fi from the buttons."
+
     if any(word in lower for word in ("speed", "mbps", "latency", "ping", "wifi", "wi-fi", "internet", "router", "network")):
         return "I can help with that Internet/Wi-Fi question. If you want a live connection check, choose your Wi-Fi from the buttons."
-    return "I can only help with Internet and Wi-Fi service questions."
+
+    return "Thanks for your message 😊 How can we help you today?"
 
 
-async def answer_internet_question(text: str) -> str:
+async def answer_customer_question(text: str) -> str:
     api_key = os.getenv("OPENAI_API_KEY", "").strip()
     if not api_key:
-        return fallback_internet_reply(text)
+        return fallback_customer_reply(text)
 
     client = AsyncOpenAI(api_key=api_key)
     try:
         response = await client.chat.completions.create(
             model=os.getenv("OPENAI_MODEL", "gpt-4.1-mini"),
-            temperature=0.2,
-            max_tokens=300,
+            temperature=0.4,
+            max_tokens=350,
             messages=[
                 {"role": "system", "content": SYSTEM_PROMPT},
                 {"role": "user", "content": text[:2000]},
             ],
         )
         content = (response.choices[0].message.content or "").strip()
-        return content or fallback_internet_reply(text)
+        return content or fallback_customer_reply(text)
     except Exception:
-        return fallback_internet_reply(text)
+        return fallback_customer_reply(text)
+
+
+# Backward-compatible name for older deployments/imports.
+answer_internet_question = answer_customer_question
