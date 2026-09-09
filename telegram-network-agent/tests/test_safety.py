@@ -70,12 +70,15 @@ class ReadOnlySafetyTests(unittest.TestCase):
         self.assertNotIn("ruijie_status", bot_source)
         self.assertNotIn("ruijie_status", network_source)
 
-    def test_ai_prompt_protects_credentials_and_scope(self):
+    def test_ai_prompt_allows_customer_chat_but_protects_network(self):
         source = (ROOT / "agent.py").read_text(encoding="utf-8")
-        self.assertIn("Internet/Wi-Fi customer support assistant", source)
+        self.assertIn("friendly Telegram customer-support assistant", source)
+        self.assertIn("normal customer questions", source)
+        self.assertIn("Do not invent business-specific facts", source)
         self.assertIn("Never request or reveal passwords", source)
         self.assertIn("public router IPs", source)
-        self.assertIn("only help with Internet and Wi-Fi", source)
+        self.assertIn("Never claim that you performed a live router check", source)
+        self.assertIn("Do not respond in Thai", source)
 
 
 if __name__ == "__main__":
