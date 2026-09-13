@@ -1,0 +1,35 @@
+name: Product Studio Importer Upgrade
+
+on:
+  push:
+    paths:
+      - 'cambodia-product-studio/run-importer-upgrade.txt'
+
+permissions:
+  contents: write
+
+jobs:
+  patch-product-studio:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Add enhanced importer to Product Studio
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('cambodia-product-studio/index.html')
+          text = p.read_text(encoding='utf-8')
+          marker = '<script src="./upgrade-v3.js?v=3"></script>'
+          if marker not in text:
+              text = text.replace('</body>', marker + '\n</body>')
+              p.write_text(text, encoding='utf-8')
+          PY
+      - name: Commit update
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add cambodia-product-studio/index.html
+          if ! git diff --cached --quiet; then
+            git commit -m "Load enhanced Taobao importer"
+            git push
+          fi
