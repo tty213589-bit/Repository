@@ -273,5 +273,6 @@ function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&l
 applySettings();renderProducts();renderSettings();if(products[0]){currentId=products[0].id;loadStudio(currentId)}
 if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
 </script>
+<script src="./upgrade-v3.js?v=3"></script>
 </body>
 </html>
