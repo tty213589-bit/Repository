@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#0b1020" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Product Studio" />
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="icon" href="./icon.svg" type="image/svg+xml" />
+  <title>Cambodia Product Studio</title>
+  <style>
+    :root{--bg:#070b15;--panel:#0f1628;--panel2:#141d33;--text:#f7f9ff;--muted:#93a0b9;--line:#23304c;--accent:#6d7cff;--accent2:#45d0ff;--good:#36d399;--warn:#ffbd5a;--bad:#ff6b7a;--shadow:0 18px 50px rgba(0,0,0,.35)}
+    *{box-sizing:border-box}html{background:var(--bg);color-scheme:dark}body{margin:0;font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans Khmer",Arial,sans-serif;background:radial-gradient(1000px 600px at 50% -100px,#1a2856 0,#0a1020 45%,var(--bg) 70%);color:var(--text);min-height:100vh}
+    button,input,textarea,select{font:inherit}button{cursor:pointer}a{color:inherit}.app{max-width:760px;margin:0 auto;min-height:100vh;padding:calc(env(safe-area-inset-top) + 16px) 16px calc(env(safe-area-inset-bottom) + 92px)}
+    .top{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-bottom:18px}.brand{display:flex;gap:12px;align-items:center}.logo{width:44px;height:44px;border-radius:15px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center;box-shadow:0 12px 34px #6073ff55;font-weight:900}.brand h1{font-size:18px;margin:0}.brand p{font-size:12px;color:var(--muted);margin:3px 0 0}.pill{border:1px solid var(--line);background:#0d1425cc;border-radius:999px;padding:8px 11px;color:var(--muted);font-size:12px}
+    .card{background:linear-gradient(180deg,#121a2dE8,#0d1424EE);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);padding:18px}.card+.card{margin-top:14px}.hero{padding:22px}.hero h2{font-size:28px;line-height:1.08;margin:0 0 8px;letter-spacing:-.7px}.hero p{color:var(--muted);margin:0 0 18px;line-height:1.5}.row{display:flex;gap:10px}.row>*{flex:1}.input,.textarea,.select{width:100%;background:#090f1e;border:1px solid #293655;color:var(--text);border-radius:16px;padding:13px 14px;outline:none}.input:focus,.textarea:focus,.select:focus{border-color:#7282ff;box-shadow:0 0 0 3px #6474ff20}.textarea{min-height:98px;resize:vertical}.btn{border:0;border-radius:16px;padding:13px 16px;background:linear-gradient(135deg,var(--accent),#5362e8);color:white;font-weight:750;box-shadow:0 10px 28px #586aff3c}.btn:disabled{opacity:.5}.btn.secondary{background:#151f35;border:1px solid #2b3959;color:#e8edff;box-shadow:none}.btn.ghost{background:transparent;border:1px solid var(--line);box-shadow:none;color:#cbd5ef}.btn.bad{background:#3a1720;border:1px solid #6e2735;box-shadow:none;color:#ffbcc5}.small{padding:9px 12px;border-radius:13px;font-size:13px}.hint{font-size:12px;color:var(--muted);margin-top:9px;line-height:1.45}.status{margin-top:12px;border-radius:16px;padding:12px 13px;font-size:13px;line-height:1.4}.status.info{background:#112043;border:1px solid #25437e}.status.good{background:#102d26;border:1px solid #1f6352}.status.warn{background:#332610;border:1px solid #715523}.status.bad{background:#35141a;border:1px solid #772936}.hidden{display:none!important}
+    .section-title{display:flex;align-items:center;justify-content:space-between;margin:5px 0 12px}.section-title h3{font-size:15px;margin:0}.section-title span{font-size:12px;color:var(--muted)}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.field label{display:block;color:#aeb9d1;font-size:12px;margin:0 0 6px}.metric{background:#0a1121;border:1px solid var(--line);border-radius:18px;padding:13px}.metric strong{display:block;font-size:20px}.metric span{font-size:11px;color:var(--muted)}.profit.good{color:var(--good)}.profit.bad{color:var(--bad)}.tag{display:inline-flex;align-items:center;gap:6px;border-radius:999px;background:#17223b;border:1px solid #2e3c5f;padding:7px 10px;font-size:12px;color:#dbe3ff}.tags{display:flex;flex-wrap:wrap;gap:7px}.divider{height:1px;background:var(--line);margin:16px 0}.nav{position:fixed;z-index:20;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom) + 10px);width:min(720px,calc(100% - 20px));background:#0b1222E8;border:1px solid #263553;border-radius:22px;display:grid;grid-template-columns:repeat(4,1fr);padding:7px;backdrop-filter:blur(18px);box-shadow:0 16px 50px #0009}.nav button{background:transparent;border:0;color:#8391ac;border-radius:15px;padding:10px 6px;font-size:11px;display:flex;flex-direction:column;gap:4px;align-items:center}.nav button.active{background:#18233e;color:white}.nav b{font-size:17px}.view{display:none}.view.active{display:block}
+    .product-row{display:flex;gap:12px;align-items:center;padding:12px;border:1px solid var(--line);background:#0a1120;border-radius:18px;margin-bottom:9px}.thumb{width:62px;height:62px;border-radius:14px;background:#151f35;object-fit:cover;flex:0 0 auto}.grow{flex:1;min-width:0}.ellipsis{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.product-row h4{font-size:14px;margin:0 0 5px}.product-row p{font-size:12px;color:var(--muted);margin:0}.empty{text-align:center;padding:34px 14px;color:var(--muted)}.preview{overflow:hidden;border-radius:24px;background:linear-gradient(160deg,#111a31,#070b15);border:1px solid #263554}.preview-img{aspect-ratio:1/1;background:#182238;display:grid;place-items:center;overflow:hidden}.preview-img img{width:100%;height:100%;object-fit:cover}.preview-body{padding:17px}.preview-price{font-size:29px;font-weight:900;letter-spacing:-.8px}.preview-title{font-size:20px;font-weight:800;line-height:1.25;margin:6px 0}.preview-desc{color:#a8b4cc;line-height:1.55;font-size:14px}.copybox{background:#0a1120;border:1px solid var(--line);border-radius:17px;padding:13px;white-space:pre-wrap;font-size:13px;line-height:1.55;max-height:280px;overflow:auto}.images{display:flex;gap:8px;overflow:auto;padding-bottom:4px}.img-chip{position:relative;flex:0 0 82px;height:82px;border-radius:15px;overflow:hidden;background:#141f34;border:1px solid var(--line)}.img-chip img{width:100%;height:100%;object-fit:cover}.img-chip button{position:absolute;right:4px;top:4px;width:24px;height:24px;border-radius:50%;border:0;background:#000b;color:white}.specrow{display:grid;grid-template-columns:1fr 1fr auto;gap:7px;margin-bottom:7px}.specrow .input{padding:10px 11px;border-radius:12px}.poster-canvas{width:100%;border-radius:20px;border:1px solid var(--line);background:#111;display:block}.sr{position:absolute;left:-9999px}.khr{font-family:-apple-system,BlinkMacSystemFont,"Noto Sans Khmer",sans-serif}
+    @media(max-width:520px){.hero h2{font-size:25px}.grid2,.grid3{grid-template-columns:1fr}.row.stack{flex-direction:column}.app{padding-left:12px;padding-right:12px}.card{border-radius:21px}.top .pill{display:none}}
+  </style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <div class="brand"><div class="logo">CP</div><div><h1>Cambodia Product Studio</h1><p id="storeSubtitle">Local-first reseller toolkit</p></div></div>
+    <span class="pill">$0 paid API required</span>
+  </header>
+
+  <main>
+    <section id="homeView" class="view active">
+      <div class="card hero">
+        <h2>Paste a Taobao link.<br>Build a Cambodia-ready listing.</h2>
+        <p>We try to read public product information, then turn it into a clean editable listing with pricing, profit and Khmer/English sales copy.</p>
+        <label class="sr" for="taobaoInput">Taobao or Tmall product link</label>
+        <textarea id="taobaoInput" class="textarea" placeholder="Paste a Taobao/Tmall link or shared text here…"></textarea>
+        <div class="row stack" style="margin-top:10px">
+          <button class="btn" id="importBtn">Import public details</button>
+          <button class="btn secondary" id="manualBtn">Create manually</button>
+        </div>
+        <div class="hint">Public data only. The app never asks for your Taobao password, OTP, bank login, cookies or session token.</div>
+        <div id="importStatus" class="status info hidden"></div>
+      </div>
+
+      <div class="card">
+        <div class="section-title"><h3>Three ways to start</h3><span>Works even when Taobao blocks import</span></div>
+        <div class="grid3">
+          <button class="btn secondary" onclick="document.getElementById('taobaoInput').focus()">🔗 Paste link</button>
+          <button class="btn secondary" id="uploadShortcut">📷 Upload photos</button>
+          <button class="btn secondary" id="sampleBtn">✨ Demo product</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-title"><h3>Business rules built in</h3><span>Cambodia-first</span></div>
+        <div class="tags"><span class="tag">Market price first</span><span class="tag">Landed cost</span><span class="tag">Net profit</span><span class="tag">Margin warnings</span><span class="tag">Khmer + English</span></div>
+      </div>
+    </section>
+
+    <section id="productsView" class="view">
+      <div class="card">
+        <div class="section-title"><h3>Saved products</h3><button class="btn small" id="newProductBtn">+ New</button></div>
+        <input id="productSearch" class="input" placeholder="Search products…" />
+        <div id="productsList" style="margin-top:12px"></div>
+      </div>
+      <div class="card">
+        <div class="section-title"><h3>Backup</h3><span>Your data stays on this device</span></div>
+        <div class="row stack"><button class="btn secondary" id="exportBtn">Export JSON backup</button><label class="btn secondary" style="text-align:center">Import backup<input id="backupInput" type="file" accept="application/json" hidden></label></div>
+      </div>
+    </section>
+
+    <section id="studioView" class="view">
+      <div id="studioEmpty" class="card empty">Create or select a product first.</div>
+      <div id="studioContent" class="hidden">
+        <div class="card">
+          <div class="section-title"><h3>Product Studio</h3><span id="saveState">Draft</span></div>
+          <div class="field"><label>Product title</label><input id="pTitle" class="input" placeholder="Product name" /></div>
+          <div class="grid2" style="margin-top:10px">
+            <div class="field"><label>Taobao cost (CNY)</label><input id="pCostCny" class="input" type="number" step="0.01" min="0" /></div>
+            <div class="field"><label>Exchange rate (CNY per USD)</label><input id="pRate" class="input" type="number" step="0.01" min="0.01" /></div>
+          </div>
+          <div class="grid2" style="margin-top:10px">
+            <div class="field"><label>China shipping (USD)</label><input id="pChinaShip" class="input" type="number" step="0.01" min="0" /></div>
+            <div class="field"><label>International shipping (USD)</label><input id="pIntlShip" class="input" type="number" step="0.01" min="0" /></div>
+            <div class="field"><label>Local delivery (USD)</label><input id="pLocal" class="input" type="number" step="0.01" min="0" /></div>
+            <div class="field"><label>Other fees (USD)</label><input id="pFees" class="input" type="number" step="0.01" min="0" /></div>
+          </div>
+          <div class="grid2" style="margin-top:10px">
+            <div class="field"><label>Selling price (USD)</label><input id="pSell" class="input" type="number" step="0.01" min="0" /></div>
+            <div class="field"><label>Cambodia market price (USD)</label><input id="pMarket" class="input" type="number" step="0.01" min="0" /></div>
+          </div>
+          <div class="grid3" style="margin-top:12px">
+            <div class="metric"><strong id="landedCost">$0.00</strong><span>Landed cost</span></div>
+            <div class="metric"><strong id="netProfit" class="profit">$0.00</strong><span>Profit / item</span></div>
+            <div class="metric"><strong id="marginPct">0%</strong><span>Margin</span></div>
+          </div>
+          <div id="priceWarning" class="status warn hidden"></div>
+          <div class="divider"></div>
+          <div class="section-title"><h3>Smart price helper</h3><span>Deterministic, no AI fee</span></div>
+          <div class="grid3">
+            <div class="field"><label>Market low</label><input id="marketLow" class="input" type="number" step="0.01" /></div>
+            <div class="field"><label>Market high</label><input id="marketHigh" class="input" type="number" step="0.01" /></div>
+            <div class="field"><label>Target margin %</label><input id="targetMargin" class="input" type="number" step="1" /></div>
+          </div>
+          <div id="priceSuggestion" class="status info" style="margin-top:10px">Enter a local market range to get a safe price suggestion.</div>
+        </div>
+
+        <div class="card">
+          <div class="section-title"><h3>Images</h3><span>Upload or add public image URLs</span></div>
+          <div id="imageList" class="images"></div>
+          <div class="row stack" style="margin-top:10px"><input id="imageUrl" class="input" placeholder="https://… image URL" /><button class="btn secondary" id="addImageUrlBtn">Add URL</button><label class="btn secondary" style="text-align:center">Upload images<input id="imageUpload" type="file" accept="image/*" multiple hidden></label></div>
+          <p class="hint">Uploaded images are compressed and stored on your device. Source watermarks are not removed.</p>
+        </div>
+
+        <div class="card">
+          <div class="section-title"><h3>Product details</h3><span>Everything stays editable</span></div>
+          <div class="field"><label>Short description / benefits</label><textarea id="pDesc" class="textarea"></textarea></div>
+          <div class="grid2" style="margin-top:10px">
+            <div class="field"><label>Seller / store</label><input id="pSeller" class="input" /></div>
+            <div class="field"><label>Sales / orders</label><input id="pSales" class="input" /></div>
+            <div class="field"><label>Rating / positive rate</label><input id="pRating" class="input" /></div>
+            <div class="field"><label>Review count</label><input id="pReviews" class="input" /></div>
+          </div>
+          <div class="field" style="margin-top:10px"><label>Shipping note</label><input id="pShipping" class="input" /></div>
+          <div class="field" style="margin-top:10px"><label>Variants (one per line)</label><textarea id="pVariants" class="textarea" placeholder="Silver\nBlack\nWhite"></textarea></div>
+          <div class="divider"></div>
+          <div class="section-title"><h3>Specifications</h3><button class="btn secondary small" id="addSpecBtn">+ Add</button></div>
+          <div id="specsList"></div>
+          <div class="field" style="margin-top:10px"><label>Source product URL (admin only)</label><input id="pSource" class="input" /></div>
+        </div>
+
+        <div class="card">
+          <div class="section-title"><h3>Khmer + English sales copy</h3><span>Generated locally</span></div>
+          <div class="row"><button class="btn secondary small" id="copyEnglishBtn">Copy English</button><button class="btn secondary small" id="copyKhmerBtn">Copy Khmer</button></div>
+          <h4 style="font-size:13px;color:var(--muted)">English</h4><div id="englishCopy" class="copybox"></div>
+          <h4 style="font-size:13px;color:var(--muted)">Khmer</h4><div id="khmerCopy" class="copybox khr"></div>
+        </div>
+
+        <div class="card">
+          <div class="section-title"><h3>Customer preview</h3><span>New visual design</span></div>
+          <div id="productPreview" class="preview"></div>
+          <div class="row stack" style="margin-top:12px"><button class="btn" id="publishBtn">Publish listing</button><button class="btn secondary" id="shareBtn">Share</button></div>
+        </div>
+
+        <div class="card">
+          <div class="section-title"><h3>Social poster</h3><span>4:5 PNG</span></div>
+          <canvas id="posterCanvas" class="poster-canvas" width="1080" height="1350"></canvas>
+          <button class="btn" id="downloadPosterBtn" style="width:100%;margin-top:10px">Download poster PNG</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="settingsView" class="view">
+      <div class="card">
+        <div class="section-title"><h3>Store settings</h3><span>Saved on this device</span></div>
+        <div class="field"><label>Store name</label><input id="sStore" class="input" /></div>
+        <div class="grid2" style="margin-top:10px"><div class="field"><label>Default CNY per USD</label><input id="sRate" class="input" type="number" step="0.01" /></div><div class="field"><label>Default target margin %</label><input id="sMargin" class="input" type="number" step="1" /></div></div>
+        <div class="grid2" style="margin-top:10px"><div class="field"><label>Default international shipping $</label><input id="sIntl" class="input" type="number" step="0.01" /></div><div class="field"><label>Default local delivery $</label><input id="sLocal" class="input" type="number" step="0.01" /></div></div>
+        <div class="field" style="margin-top:10px"><label>Telegram username or URL</label><input id="sTelegram" class="input" placeholder="@yourshop" /></div>
+        <div class="field" style="margin-top:10px"><label>Facebook / Messenger URL</label><input id="sFacebook" class="input" placeholder="https://m.me/…" /></div>
+        <div class="field" style="margin-top:10px"><label>WhatsApp number</label><input id="sWhatsapp" class="input" placeholder="855…" /></div>
+        <div class="field" style="margin-top:10px"><label>ABA / Wing payment note</label><textarea id="sPayment" class="textarea" placeholder="Payment instructions shown in your copy"></textarea></div>
+        <button class="btn" id="saveSettingsBtn" style="width:100%;margin-top:12px">Save settings</button>
+      </div>
+      <div class="card"><h3 style="margin-top:0">Install on iPhone</h3><p class="hint" style="font-size:13px">Open this site in Safari → Share → Add to Home Screen. The app is designed to work like a standalone mobile app and keeps your saved listings locally.</p></div>
+    </section>
+  </main>
+</div>
+
+<nav class="nav" aria-label="Main navigation">
+  <button data-view="home" class="active"><b>⌂</b><span>Home</span></button>
+  <button data-view="products"><b>▦</b><span>Products</span></button>
+  <button data-view="studio"><b>＋</b><span>Studio</span></button>
+  <button data-view="settings"><b>⚙</b><span>Settings</span></button>
+</nav>
+
+<script>
+const K_PRODUCTS='cps_products_v2',K_SETTINGS='cps_settings_v2';
+const $=id=>document.getElementById(id), money=n=>'$'+(Number(n)||0).toFixed(2), num=v=>Math.max(0,Number(v)||0);
+const defaults={storeName:'My Cambodia Shop',rate:6.7,targetMargin:35,intlShip:0,localDelivery:0,telegram:'',facebook:'',whatsapp:'',paymentNote:'Preorder: confirm total price before payment.'};
+let settings={...defaults,...safeParse(localStorage.getItem(K_SETTINGS),{})};
+let products=safeParse(localStorage.getItem(K_PRODUCTS),[]);let currentId=null;
+function safeParse(s,d){try{return JSON.parse(s)||d}catch{return d}}
+function uid(){return (crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2))}
+function saveAll(){localStorage.setItem(K_PRODUCTS,JSON.stringify(products));localStorage.setItem(K_SETTINGS,JSON.stringify(settings));}
+function extractUrl(text){const m=String(text||'').match(/https?:\/\/[^\s]+/i);return m?m[0].replace(/[),.;]+$/,''):String(text||'').trim()}
+function isTaobao(url){try{const h=new URL(url).hostname.toLowerCase();return h==='taobao.com'||h.endsWith('.taobao.com')||h==='tmall.com'||h.endsWith('.tmall.com')||h==='tb.cn'||h.endsWith('.tb.cn')}catch{return false}}
+function blankProduct(source=''){return{id:uid(),createdAt:Date.now(),updatedAt:Date.now(),status:'draft',title:'',description:'',costCny:0,rate:settings.rate,chinaShip:0,intlShip:settings.intlShip,localDelivery:settings.localDelivery,fees:0,sellPrice:0,marketPrice:0,marketLow:0,marketHigh:0,targetMargin:settings.targetMargin,images:[],seller:'',sales:'',rating:'',reviews:'',shipping:'',variants:[],specs:[],source}}
+function landed(p){return (num(p.costCny)/Math.max(.01,num(p.rate)))+num(p.chinaShip)+num(p.intlShip)+num(p.localDelivery)+num(p.fees)}
+function profit(p){return num(p.sellPrice)-landed(p)}
+function margin(p){return num(p.sellPrice)>0?profit(p)/num(p.sellPrice)*100:0}
+function suggestedPrice(p){const l=landed(p),m=Math.min(90,Math.max(0,num(p.targetMargin)))/100;const need=m>=.99?Infinity:l/(1-m);const low=num(p.marketLow),high=num(p.marketHigh);if(!low&&!high)return{need,msg:`To hit ${p.targetMargin||0}% margin, price needs to be at least ${money(need)}.`};if(high&&need>high)return{need,msg:`Not a good deal: target margin needs ${money(need)}, above local market high ${money(high)}.`};const floor=Math.max(need,low||0),ceil=high||Math.max(floor,num(p.marketPrice)||floor);return{need,msg:`Suggested selling range: ${money(floor)} – ${money(Math.max(floor,ceil))}.`}}
+function cleanTitle(t){return String(t||'').replace(/\s+/g,' ').trim().slice(0,180)}
+function parseReader(text,url){
+  const lines=String(text||'').split('\n').map(x=>x.trim()).filter(Boolean);let title='',price=0,seller='',sales='',rating='',reviews='';const images=[];
+  for(const l of lines.slice(0,80)){if(!title&&l.length>8&&!/^title:/i.test(l)&&!l.startsWith('![')&&!/^url source:/i.test(l)&&!/^published/i.test(l)) title=cleanTitle(l.replace(/^#+\s*/,''));
+    const pm=l.match(/(?:¥|￥|CNY|RMB)\s*([0-9]+(?:\.[0-9]+)?)/i);if(pm&&!price)price=Number(pm[1]);
+    const im=l.match(/!\[[^\]]*\]\((https?:\/\/[^)]+)\)/);if(im&&images.length<8&&!images.includes(im[1]))images.push(im[1]);
+    if(!seller&&/(店铺|seller|store)/i.test(l))seller=l.slice(0,120);
+    if(!sales&&/(已售|销量|sold|orders?)/i.test(l))sales=l.slice(0,80);
+    if(!rating&&/(好评|rating|positive)/i.test(l))rating=l.slice(0,80);
+    if(!reviews&&/(评价|review)/i.test(l))reviews=l.slice(0,80);
+  }
+  const titleLine=lines.find(x=>/^title:/i.test(x));if(titleLine)title=cleanTitle(titleLine.replace(/^title:\s*/i,''));
+  return{title:title||'Imported Taobao product',costCny:price,images,seller,sales,rating,reviews,source:url,description:lines.slice(0,16).join(' ').slice(0,700)};
+}
+async function importPublic(url){
+  const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),18000);
+  try{
+    const reader='https://r.jina.ai/'+url;
+    const r=await fetch(reader,{signal:controller.signal,headers:{Accept:'text/plain'}});if(!r.ok)throw new Error('Reader returned '+r.status);
+    const text=await r.text();if(!text||text.length<80)throw new Error('No public details returned');
+    if(/captcha|verify|login|访问频繁|安全验证|机器人/i.test(text)&&text.length<1000)throw new Error('Taobao requires verification');
+    return parseReader(text,url);
+  }finally{clearTimeout(timer)}
+}
+function createFromImport(d){const p=blankProduct(d.source);Object.assign(p,d);products.unshift(p);currentId=p.id;saveAll();renderProducts();loadStudio(p.id);showView('studio')}
+function showStatus(text,type='info'){const e=$('importStatus');e.textContent=text;e.className='status '+type}
+function hideStatus(){$('importStatus').classList.add('hidden')}
+function showView(name){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));$(name+'View').classList.add('active');document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.view===name));if(name==='products')renderProducts();if(name==='settings')renderSettings();window.scrollTo({top:0,behavior:'smooth'})}
+document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>showView(b.dataset.view)));
+
+$('importBtn').onclick=async()=>{const raw=$('taobaoInput').value,url=extractUrl(raw);if(!isTaobao(url)){showStatus('Please paste a valid Taobao, Tmall or tb.cn product link.','bad');return}showStatus('Importing public product information…','info');$('importBtn').disabled=true;try{const d=await importPublic(url);createFromImport(d);showStatus('Imported. Review the fields before publishing.','good')}catch(e){showStatus('Automatic import was blocked or incomplete. I opened Manual Create so you can paste details or upload screenshots without paying for an API.','warn');const p=blankProduct(url);products.unshift(p);currentId=p.id;saveAll();loadStudio(p.id);showView('studio')}finally{$('importBtn').disabled=false}}
+$('manualBtn').onclick=()=>newProduct(extractUrl($('taobaoInput').value));$('newProductBtn').onclick=()=>newProduct('');$('uploadShortcut').onclick=()=>{newProduct('');setTimeout(()=>$('imageUpload').click(),100)};
+function newProduct(source=''){const p=blankProduct(isTaobao(source)?source:'');products.unshift(p);currentId=p.id;saveAll();renderProducts();loadStudio(p.id);showView('studio')}
+$('sampleBtn').onclick=()=>{const p=blankProduct('https://item.taobao.com/');Object.assign(p,{title:'Foldable Metal Phone Stand — SAMPLE',description:'Compact foldable desk stand with adjustable viewing angle. Demo data only.',costCny:3.2,sellPrice:1.5,marketPrice:1.5,marketLow:1,marketHigh:2,targetMargin:35,images:['https://images.unsplash.com/photo-1586953208448-b95a79798f07?auto=format&fit=crop&w=1000&q=80'],seller:'Demo Store',sales:'1,000+ sold (sample)',rating:'98% positive (sample)',reviews:'300+ (sample)',shipping:'Preorder / confirm shipping',variants:['Silver','Black'],specs:[['Material','Metal'],['Use','Phone stand']]});products.unshift(p);currentId=p.id;saveAll();loadStudio(p.id);showView('studio')};
+
+function renderProducts(){const q=$('productSearch').value.toLowerCase().trim();const list=products.filter(p=>!q||p.title.toLowerCase().includes(q)||p.seller.toLowerCase().includes(q));$('productsList').innerHTML=list.length?list.map(p=>`<div class="product-row"><img class="thumb" src="${escAttr(p.images[0]||'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22%3E%3Crect width=%22100%22 height=%22100%22 fill=%22%23151f35%22/%3E%3C/svg%3E')}" alt=""><div class="grow"><h4 class="ellipsis">${esc(p.title||'Untitled product')}</h4><p>${p.status==='published'?'Published':'Draft'} · ${money(p.sellPrice)} · profit ${money(profit(p))}</p></div><button class="btn secondary small" onclick="editProduct('${p.id}')">Edit</button><button class="btn ghost small" onclick="duplicateProduct('${p.id}')">⧉</button><button class="btn bad small" onclick="deleteProduct('${p.id}')">×</button></div>`).join(''):'<div class="empty">No products yet. Create one from a Taobao link or manually.</div>'}
+$('productSearch').oninput=renderProducts;
+window.editProduct=id=>{currentId=id;loadStudio(id);showView('studio')};window.duplicateProduct=id=>{const src=products.find(p=>p.id===id);if(!src)return;const p=JSON.parse(JSON.stringify(src));p.id=uid();p.title=(p.title||'Product')+' copy';p.status='draft';p.createdAt=p.updatedAt=Date.now();products.unshift(p);saveAll();renderProducts()};window.deleteProduct=id=>{if(!confirm('Delete this product?'))return;products=products.filter(p=>p.id!==id);if(currentId===id)currentId=null;saveAll();renderProducts();if(!currentId){$('studioContent').classList.add('hidden');$('studioEmpty').classList.remove('hidden')}};
+
+const fields={pTitle:'title',pCostCny:'costCny',pRate:'rate',pChinaShip:'chinaShip',pIntlShip:'intlShip',pLocal:'localDelivery',pFees:'fees',pSell:'sellPrice',pMarket:'marketPrice',marketLow:'marketLow',marketHigh:'marketHigh',targetMargin:'targetMargin',pDesc:'description',pSeller:'seller',pSales:'sales',pRating:'rating',pReviews:'reviews',pShipping:'shipping',pSource:'source'};
+Object.entries(fields).forEach(([id,key])=>$(id).addEventListener('input',()=>{const p=getCurrent();if(!p)return;p[key]=['costCny','rate','chinaShip','intlShip','localDelivery','fees','sellPrice','marketPrice','marketLow','marketHigh','targetMargin'].includes(key)?num($(id).value):$(id).value;p.updatedAt=Date.now();saveAll();refreshStudio()}));
+$('pVariants').addEventListener('input',()=>{const p=getCurrent();if(!p)return;p.variants=$('pVariants').value.split('\n').map(x=>x.trim()).filter(Boolean);saveAll();refreshStudio()});
+function getCurrent(){return products.find(p=>p.id===currentId)}
+function loadStudio(id){const p=products.find(x=>x.id===id);if(!p)return;$('studioEmpty').classList.add('hidden');$('studioContent').classList.remove('hidden');Object.entries(fields).forEach(([eid,key])=>$(eid).value=p[key]??'');$('pVariants').value=(p.variants||[]).join('\n');renderSpecs();refreshStudio()}
+function refreshStudio(){const p=getCurrent();if(!p)return;const l=landed(p),pr=profit(p),m=margin(p);$('landedCost').textContent=money(l);$('netProfit').textContent=money(pr);$('netProfit').className='profit '+(pr>=0?'good':'bad');$('marginPct').textContent=m.toFixed(1)+'%';$('saveState').textContent=p.status==='published'?'Published':'Draft';const warns=[];if(pr<0)warns.push('Selling price is below landed cost.');else if(m<20&&p.sellPrice>0)warns.push('Margin is below 20%; this may be too thin after unexpected costs.');if(p.marketPrice>0&&p.sellPrice>p.marketPrice)warns.push('Your selling price is above the Cambodia market price you entered.');const w=$('priceWarning');w.textContent=warns.join(' ');w.classList.toggle('hidden',warns.length===0);$('priceSuggestion').textContent=suggestedPrice(p).msg;renderImages();renderSpecs();renderCopy();renderPreview();drawPoster()}
+
+function renderImages(){const p=getCurrent();$('imageList').innerHTML=(p.images||[]).map((src,i)=>`<div class="img-chip"><img src="${escAttr(src)}" alt="Product image ${i+1}"><button onclick="removeImage(${i})">×</button></div>`).join('')||'<span class="hint">No images yet.</span>'}
+window.removeImage=i=>{const p=getCurrent();p.images.splice(i,1);saveAll();refreshStudio()};
+$('addImageUrlBtn').onclick=()=>{const p=getCurrent(),u=$('imageUrl').value.trim();if(!p||!/^https?:\/\//i.test(u))return alert('Paste a valid public image URL.');p.images.push(u);$('imageUrl').value='';saveAll();refreshStudio()};
+$('imageUpload').onchange=async e=>{const p=getCurrent();if(!p)return;for(const f of [...e.target.files].slice(0,6)){try{p.images.push(await compressImage(f))}catch{}}saveAll();refreshStudio();e.target.value=''};
+function compressImage(file){return new Promise((res,rej)=>{const img=new Image(),url=URL.createObjectURL(file);img.onload=()=>{const max=1000,s=Math.min(1,max/Math.max(img.width,img.height)),c=document.createElement('canvas');c.width=Math.round(img.width*s);c.height=Math.round(img.height*s);c.getContext('2d').drawImage(img,0,0,c.width,c.height);URL.revokeObjectURL(url);res(c.toDataURL('image/jpeg',.78))};img.onerror=rej;img.src=url})}
+
+$('addSpecBtn').onclick=()=>{const p=getCurrent();p.specs.push(['','']);saveAll();renderSpecs()};
+function renderSpecs(){const p=getCurrent();if(!p)return;$('specsList').innerHTML=(p.specs||[]).map((s,i)=>`<div class="specrow"><input class="input" value="${escAttr(s[0]||'')}" placeholder="Name" oninput="updateSpec(${i},0,this.value)"><input class="input" value="${escAttr(s[1]||'')}" placeholder="Value" oninput="updateSpec(${i},1,this.value)"><button class="btn bad small" onclick="removeSpec(${i})">×</button></div>`).join('')||'<p class="hint">Add specs such as material, size, compatibility or color.</p>'}
+window.updateSpec=(i,j,v)=>{const p=getCurrent();p.specs[i][j]=v;saveAll();renderPreview();drawPoster()};window.removeSpec=i=>{const p=getCurrent();p.specs.splice(i,1);saveAll();renderSpecs();renderPreview();drawPoster()};
+
+function benefits(p){const spec=(p.specs||[]).filter(x=>x[0]&&x[1]).slice(0,4).map(x=>`${x[0]}: ${x[1]}`);if(spec.length)return spec;return ['Affordable preorder option','Details checked before confirmation','Cambodia-friendly pricing'];}
+function englishText(p){return `🔥 ${p.title||'New Product'}\n\n${benefits(p).map(x=>'✅ '+x).join('\n')}\n${p.variants?.length?'🎨 Options: '+p.variants.slice(0,5).join(', ')+'\n':''}\n💰 Price: ${money(p.sellPrice)}\n📦 Preorder — final total confirmed before ordering\n\n${settings.paymentNote||''}\n📩 Message us to order.`.trim()}
+function khmerText(p){return `🔥 ${p.title||'ផលិតផលថ្មី'}\n\n${benefits(p).map(x=>'✅ '+x).join('\n')}\n${p.variants?.length?'🎨 ជម្រើស: '+p.variants.slice(0,5).join(', ')+'\n':''}\n💰 តម្លៃ: ${money(p.sellPrice)}\n📦 Preorder — បញ្ជាក់តម្លៃសរុបមុនពេលកម្មង់\n\n${settings.paymentNote||''}\n📩 ផ្ញើសារមកយើងដើម្បីកម្មង់។`.trim()}
+function renderCopy(){const p=getCurrent();if(!p)return;$('englishCopy').textContent=englishText(p);$('khmerCopy').textContent=khmerText(p)}
+$('copyEnglishBtn').onclick=()=>copyText($('englishCopy').textContent);$('copyKhmerBtn').onclick=()=>copyText($('khmerCopy').textContent);async function copyText(t){try{await navigator.clipboard.writeText(t);alert('Copied')}catch{prompt('Copy this text:',t)}}
+function contactUrl(){if(settings.facebook)return settings.facebook;if(settings.telegram)return settings.telegram.startsWith('http')?settings.telegram:'https://t.me/'+settings.telegram.replace('@','');if(settings.whatsapp)return'https://wa.me/'+settings.whatsapp.replace(/\D/g,'');return'#'}
+function renderPreview(){const p=getCurrent();if(!p)return;const img=p.images[0]?`<img src="${escAttr(p.images[0])}" alt="${escAttr(p.title)}">`:'<div style="font-size:60px">📦</div>';$('productPreview').innerHTML=`<div class="preview-img">${img}</div><div class="preview-body"><div class="preview-price">${money(p.sellPrice)}</div><div class="preview-title">${esc(p.title||'Untitled product')}</div><div class="tags">${(p.variants||[]).slice(0,4).map(v=>`<span class="tag">${esc(v)}</span>`).join('')}</div><p class="preview-desc">${esc(p.description||'Preorder product. Final total confirmed before ordering.')}</p><div class="grid2">${(p.specs||[]).filter(x=>x[0]&&x[1]).slice(0,4).map(x=>`<div class="metric"><span>${esc(x[0])}</span><strong style="font-size:14px;margin-top:3px">${esc(x[1])}</strong></div>`).join('')}</div><a href="${escAttr(contactUrl())}" target="_blank" rel="noopener" class="btn" style="display:block;text-align:center;text-decoration:none;margin-top:14px">Order / Message</a></div>`}
+$('publishBtn').onclick=()=>{const p=getCurrent();if(!p.title.trim()||p.sellPrice<=0)return alert('Add a title and selling price first.');p.status=p.status==='published'?'draft':'published';saveAll();refreshStudio();renderProducts()};
+$('shareBtn').onclick=async()=>{const p=getCurrent(),text=englishText(p);if(navigator.share){try{await navigator.share({title:p.title,text})}catch{}}else copyText(text)};
+
+function drawPoster(){const p=getCurrent();if(!p)return;const c=$('posterCanvas'),ctx=c.getContext('2d'),W=c.width,H=c.height;const g=ctx.createLinearGradient(0,0,W,H);g.addColorStop(0,'#101b39');g.addColorStop(.58,'#090e19');g.addColorStop(1,'#03050b');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);ctx.fillStyle='#7f8cff';ctx.beginPath();ctx.arc(900,100,250,0,Math.PI*2);ctx.fill();ctx.globalAlpha=.25;ctx.filter='blur(70px)';ctx.beginPath();ctx.arc(900,100,270,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;ctx.filter='none';ctx.fillStyle='#fff';ctx.font='700 38px system-ui';ctx.fillText(settings.storeName||'Cambodia Shop',64,78);ctx.fillStyle='#9da9c3';ctx.font='28px system-ui';ctx.fillText('PREORDER • CAMBODIA',64,122);const y=180,imgH=620;ctx.fillStyle='#151d31';roundRect(ctx,55,y,W-110,imgH,42);ctx.fill();const after=()=>{ctx.fillStyle='#fff';ctx.font='800 60px system-ui';wrap(ctx,p.title||'Product',64,880,950,72,2);ctx.fillStyle='#8e9cff';ctx.font='900 78px system-ui';ctx.fillText(money(p.sellPrice),64,1055);ctx.fillStyle='#c4cee2';ctx.font='30px system-ui';ctx.fillText('Preorder • Confirm total before ordering',64,1110);ctx.fillStyle='#fff';ctx.font='700 34px system-ui';ctx.fillText('Message us to order',64,1260);ctx.fillStyle='#91a0bd';ctx.font='24px system-ui';ctx.fillText('Generated with Cambodia Product Studio',64,1302)};if(p.images[0]){const im=new Image();im.crossOrigin='anonymous';im.onload=()=>{coverDraw(ctx,im,55,y,W-110,imgH,42);after()};im.onerror=after;im.src=p.images[0]}else after()}
+function roundRect(ctx,x,y,w,h,r){ctx.beginPath();ctx.roundRect?ctx.roundRect(x,y,w,h,r):(ctx.rect(x,y,w,h));}
+function coverDraw(ctx,img,x,y,w,h,r){ctx.save();roundRect(ctx,x,y,w,h,r);ctx.clip();const s=Math.max(w/img.width,h/img.height),dw=img.width*s,dh=img.height*s;ctx.drawImage(img,x+(w-dw)/2,y+(h-dh)/2,dw,dh);ctx.restore()}
+function wrap(ctx,text,x,y,maxW,lineH,maxLines){const words=String(text).split(' ');let line='',lines=[];for(const w of words){const t=line?line+' '+w:w;if(ctx.measureText(t).width>maxW&&line){lines.push(line);line=w}else line=t}if(line)lines.push(line);lines.slice(0,maxLines).forEach((l,i)=>ctx.fillText(l,x,y+i*lineH))}
+$('downloadPosterBtn').onclick=()=>{const a=document.createElement('a');a.download=((getCurrent()?.title||'product').replace(/[^a-z0-9]+/gi,'-').slice(0,40)||'product')+'-poster.png';a.href=$('posterCanvas').toDataURL('image/png');a.click()};
+
+function renderSettings(){ $('sStore').value=settings.storeName;$('sRate').value=settings.rate;$('sMargin').value=settings.targetMargin;$('sIntl').value=settings.intlShip;$('sLocal').value=settings.localDelivery;$('sTelegram').value=settings.telegram;$('sFacebook').value=settings.facebook;$('sWhatsapp').value=settings.whatsapp;$('sPayment').value=settings.paymentNote }
+$('saveSettingsBtn').onclick=()=>{settings={...settings,storeName:$('sStore').value.trim()||defaults.storeName,rate:num($('sRate').value)||6.7,targetMargin:num($('sMargin').value)||35,intlShip:num($('sIntl').value),localDelivery:num($('sLocal').value),telegram:$('sTelegram').value.trim(),facebook:$('sFacebook').value.trim(),whatsapp:$('sWhatsapp').value.trim(),paymentNote:$('sPayment').value.trim()};saveAll();applySettings();alert('Settings saved')};
+function applySettings(){$('storeSubtitle').textContent=settings.storeName}
+$('exportBtn').onclick=()=>{const blob=new Blob([JSON.stringify({version:2,exportedAt:new Date().toISOString(),settings,products},null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='cambodia-product-studio-backup.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)};
+$('backupInput').onchange=async e=>{try{const d=JSON.parse(await e.target.files[0].text());if(!Array.isArray(d.products))throw 0;products=d.products;settings={...defaults,...(d.settings||{})};saveAll();applySettings();renderProducts();alert('Backup restored')}catch{alert('Invalid backup file')}e.target.value=''};
+
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}function escAttr(s){return esc(s).replace(/`/g,'&#96;')}
+applySettings();renderProducts();renderSettings();if(products[0]){currentId=products[0].id;loadStudio(currentId)}
+if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+</script>
+</body>
+</html>
