@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#08090d">
+<link rel="manifest" href="./manifest.json">
+<title>Sabay Movies</title>
+<style>
+:root{--bg:#08090d;--card:#111318;--line:#242631;--muted:#a1a1aa;--red:#e50914}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+.app{max-width:760px;margin:auto;padding:calc(16px + env(safe-area-inset-top)) 16px calc(40px + env(safe-area-inset-bottom))}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.brand{font-size:28px;font-weight:900;letter-spacing:-1px}.sub{font-size:12px;color:var(--muted);margin-top:3px}
+button{font:inherit}.lang,.pill{background:#111318;color:#fff;border:1px solid var(--line);border-radius:999px;padding:9px 12px;font-weight:800}
+.hero{background:linear-gradient(135deg,#151821,#0c0e13);border:1px solid var(--line);border-radius:28px;padding:22px;margin-bottom:16px;overflow:hidden;position:relative}
+.hero:after{content:"";position:absolute;width:170px;height:170px;border-radius:50%;background:rgba(229,9,20,.18);right:-50px;top:-60px}
+.eyebrow{color:var(--red);font-size:11px;font-weight:900;letter-spacing:1.5px}.hero h1{font-size:34px;line-height:1.06;margin:10px 0 10px;max-width:520px;letter-spacing:-1.5px}.hero p{color:#c4c6cd;line-height:1.45;max-width:520px;margin:0 0 16px}
+.primary{display:inline-block;background:var(--red);color:#fff;text-decoration:none;border:0;border-radius:15px;padding:13px 16px;font-weight:900;position:relative;z-index:1}
+.search{width:100%;background:#111318;border:1px solid var(--line);border-radius:16px;padding:14px 15px;color:#fff;font-size:16px;outline:none;margin-bottom:12px}
+.tabs{display:flex;gap:8px;margin-bottom:18px}.pill.active{background:#fff;color:#090a0e;border-color:#fff}.section{font-size:21px;font-weight:900;margin:6px 0 12px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.card{background:#111318;border:1px solid var(--line);border-radius:20px;overflow:hidden}
+.poster{aspect-ratio:.72;padding:14px;display:flex;flex-direction:column;justify-content:flex-end;position:relative}.poster:before{content:"";position:absolute;width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,.13);right:-25px;top:-20px}
+.type{font-size:10px;font-weight:900;letter-spacing:1.2px;opacity:.78}.title{font-size:21px;font-weight:900;line-height:1.05;margin-top:6px}.meta{font-size:11px;opacity:.8;margin-top:5px}
+.cardbar{display:flex;align-items:center;padding:11px}.info{flex:1;min-width:0}.name{font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.genre{color:#8b8e99;font-size:10px;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fav{border:0;background:transparent;color:#ddd;font-size:27px;padding:0 0 0 8px}.fav.on{color:var(--red)}
+.notice{margin-top:20px;padding:15px;border:1px solid var(--line);border-radius:17px;background:#0d0f14;color:#8b8e99;font-size:12px;line-height:1.5}.notice b{color:#fff}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.75);display:none;align-items:flex-end;justify-content:center;z-index:30}.modal.show{display:flex}.sheet{width:100%;max-width:760px;background:#111318;border:1px solid var(--line);border-radius:30px 30px 0 0;padding:20px calc(18px + env(safe-area-inset-right)) calc(25px + env(safe-area-inset-bottom)) calc(18px + env(safe-area-inset-left))}
+.sheetposter{height:150px;border-radius:22px;padding:18px;display:flex;align-items:flex-end;font-size:28px;font-weight:900}.sheet h2{margin:14px 0 4px}.sheet .desc{color:#c9cad0;line-height:1.5}.actions{display:grid;gap:9px;margin-top:16px}.secondary,.close{border:0;border-radius:15px;padding:13px;font-weight:850}.secondary{background:#1a1d25;color:#fff}.close{background:transparent;color:#aaa}
+.empty{text-align:center;color:#888;padding:36px 10px;border:1px solid var(--line);border-radius:18px}
+@media(min-width:650px){.grid{grid-template-columns:repeat(3,1fr)}} 
+</style>
+</head>
+<body>
+<main class="app">
+<header><div><div class="brand">Sabay Movies</div><div class="sub" id="subtitle">ភាពយន្តរបស់អ្នក • បើកមើលក្នុង Netflix</div></div><button class="lang" id="lang">EN</button></header>
+<section class="hero"><div class="eyebrow">SABAY MOVIES</div><h1 id="heroTitle">ជ្រើសរើសនៅទីនេះ។<br>មើលក្នុង Netflix.</h1><p id="heroText">ស្វែងរក រក្សាទុក ហើយបើក Netflix ផ្លូវការសម្រាប់ការចាក់វីដេអូ។</p><a class="primary" id="heroBtn" href="https://www.netflix.com/" target="_blank" rel="noopener">▶ មើលលើ Netflix</a></section>
+<input class="search" id="search" placeholder="ស្វែងរកភាពយន្ត ឬស៊េរី…">
+<div class="tabs"><button class="pill active" data-tab="all" id="allTab">ទាំងអស់</button><button class="pill" data-tab="fav" id="favTab">ចូលចិត្ត</button></div>
+<div class="section" id="sectionTitle">ពេញនិយម</div>
+<div class="grid" id="grid"></div>
+<div class="notice"><b>Netflix connection</b><br><span id="legal">Sabay Movies មិនចម្លង ទាញយក ឬចាក់ផ្សាយវីដេអូ Netflix ទេ។ ការចូលគណនី និងការចាក់វីដេអូធ្វើឡើងនៅ Netflix ផ្លូវការ។ ត្រូវការគម្រោង Netflix ហើយមាតិកាអាចខុសគ្នាតាមតំបន់។</span></div>
+</main>
+<div class="modal" id="modal"><div class="sheet"><div class="sheetposter" id="sheetPoster"></div><h2 id="sheetTitle"></h2><div class="genre" id="sheetMeta"></div><p class="desc" id="sheetDesc"></p><div class="actions"><a class="primary" id="watch" target="_blank" rel="noopener">▶ Watch on Netflix</a><button class="secondary" id="save">♡ Add favorite</button><button class="close" id="close">Close</button></div></div></div>
+<script>
+const movies=[
+{id:"1",title:"Wednesday",year:"2022",type:"Series",genre:"Mystery • Comedy",rating:"16+",accent:"#7c3aed",desc:"A dark, witty mystery series. Availability depends on your Netflix region."},
+{id:"2",title:"Squid Game",year:"2021",type:"Series",genre:"Thriller • Drama",rating:"18+",accent:"#e11d48",desc:"A high-stakes survival drama. Availability depends on your Netflix region."},
+{id:"3",title:"ONE PIECE",year:"2023",type:"Series",genre:"Adventure • Fantasy",rating:"13+",accent:"#0284c7",desc:"A live-action adventure across the seas. Availability depends on your Netflix region."},
+{id:"4",title:"Extraction 2",year:"2023",type:"Movie",genre:"Action • Thriller",rating:"18+",accent:"#ea580c",desc:"A high-intensity action movie. Availability depends on your Netflix region."},
+{id:"5",title:"The Gray Man",year:"2022",type:"Movie",genre:"Action • Spy",rating:"16+",accent:"#475569",desc:"A globe-spanning spy action movie. Availability depends on your Netflix region."},
+{id:"6",title:"The Old Guard 2",year:"2025",type:"Movie",genre:"Action • Fantasy",rating:"18+",accent:"#0891b2",desc:"Immortal warriors return for another mission. Availability depends on your Netflix region."}
+];
+const txt={
+km:{subtitle:"ភាពយន្តរបស់អ្នក • បើកមើលក្នុង Netflix",heroTitle:"ជ្រើសរើសនៅទីនេះ។<br>មើលក្នុង Netflix.",heroText:"ស្វែងរក រក្សាទុក ហើយបើក Netflix ផ្លូវការសម្រាប់ការចាក់វីដេអូ។",heroBtn:"▶ មើលលើ Netflix",search:"ស្វែងរកភាពយន្ត ឬស៊េរី…",all:"ទាំងអស់",fav:"ចូលចិត្ត",section:"ពេញនិយម",legal:"Sabay Movies មិនចម្លង ទាញយក ឬចាក់ផ្សាយវីដេអូ Netflix ទេ។ ការចូលគណនី និងការចាក់វីដេអូធ្វើឡើងនៅ Netflix ផ្លូវការ។ ត្រូវការគម្រោង Netflix ហើយមាតិកាអាចខុសគ្នាតាមតំបន់។",watch:"▶ មើលលើ Netflix",add:"♡ បន្ថែមចូលចិត្ត",remove:"♥ ដកចេញ",close:"បិទ",empty:"មិនទាន់មានភាពយន្តដែលបានរក្សាទុកទេ"},
+en:{subtitle:"Your movie companion • playback stays in Netflix",heroTitle:"Choose here.<br>Watch in Netflix.",heroText:"Search, save favorites, then open official Netflix for playback.",heroBtn:"▶ Watch on Netflix",search:"Search movies or series…",all:"All",fav:"Favorites",section:"Featured",legal:"Sabay Movies does not copy, download, embed, or restream Netflix video. Sign-in and playback stay in the official Netflix experience. A Netflix plan may be required and availability varies by region.",watch:"▶ Watch on Netflix",add:"♡ Add favorite",remove:"♥ Remove favorite",close:"Close",empty:"No saved titles yet"}
+};
+let lang="km",tab="all",fav=JSON.parse(localStorage.getItem("sabayFav")||"[]"),selected=null;
+const $=s=>document.querySelector(s),grid=$("#grid"),modal=$("#modal");
+function esc(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]))}
+function render(){
+const q=$("#search").value.trim().toLowerCase(),t=txt[lang];
+const list=movies.filter(m=>(!q||[m.title,m.genre,m.type,m.year].join(" ").toLowerCase().includes(q))&&(tab==="all"||fav.includes(m.id)));
+grid.innerHTML=list.length?list.map(m=>`<article class="card"><div class="poster" style="background:${m.accent}" data-open="${m.id}"><div class="type">${m.type.toUpperCase()}</div><div class="title">${esc(m.title)}</div><div class="meta">${m.year} • ${m.rating}</div></div><div class="cardbar"><div class="info"><div class="name">${esc(m.title)}</div><div class="genre">${esc(m.genre)}</div></div><button class="fav ${fav.includes(m.id)?"on":""}" data-fav="${m.id}">${fav.includes(m.id)?"♥":"♡"}</button></div></article>`).join(""):`<div class="empty" style="grid-column:1/-1">${t.empty}</div>`;
+document.querySelectorAll("[data-open]").forEach(x=>x.onclick=()=>openMovie(x.dataset.open));
+document.querySelectorAll("[data-fav]").forEach(x=>x.onclick=()=>toggleFav(x.dataset.fav));
+$("#favTab").textContent=t.fav+" ("+fav.length+")";
+}
+function toggleFav(id){fav=fav.includes(id)?fav.filter(x=>x!==id):[...fav,id];localStorage.setItem("sabayFav",JSON.stringify(fav));render();if(selected) updateSheet()}
+function openMovie(id){selected=movies.find(m=>m.id===id);updateSheet();modal.classList.add("show")}
+function updateSheet(){if(!selected)return;const t=txt[lang];$("#sheetPoster").style.background=selected.accent;$("#sheetPoster").textContent=selected.title;$("#sheetTitle").textContent=selected.title;$("#sheetMeta").textContent=`${selected.year} • ${selected.genre} • ${selected.rating}`;$("#sheetDesc").textContent=selected.desc;$("#watch").href="https://www.netflix.com/search?q="+encodeURIComponent(selected.title);$("#watch").textContent=t.watch;$("#save").textContent=fav.includes(selected.id)?t.remove:t.add;$("#close").textContent=t.close}
+function applyLang(){const t=txt[lang];$("#subtitle").textContent=t.subtitle;$("#heroTitle").innerHTML=t.heroTitle;$("#heroText").textContent=t.heroText;$("#heroBtn").textContent=t.heroBtn;$("#search").placeholder=t.search;$("#allTab").textContent=t.all;$("#sectionTitle").textContent=t.section;$("#legal").textContent=t.legal;$("#lang").textContent=lang==="km"?"EN":"ខ្មែរ";render();updateSheet()}
+$("#lang").onclick=()=>{lang=lang==="km"?"en":"km";applyLang()};$("#search").oninput=render;
+document.querySelectorAll("[data-tab]").forEach(x=>x.onclick=()=>{tab=x.dataset.tab;document.querySelectorAll(".pill").forEach(b=>b.classList.toggle("active",b===x));render()});
+$("#close").onclick=()=>modal.classList.remove("show");modal.onclick=e=>{if(e.target===modal)modal.classList.remove("show")};$("#save").onclick=()=>selected&&toggleFav(selected.id);
+if("serviceWorker" in navigator) navigator.serviceWorker.register("./sw.js").catch(()=>{});
+applyLang();
+</script>
+</body>
+</html>
