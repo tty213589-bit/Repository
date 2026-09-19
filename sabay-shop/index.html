@@ -123,53 +123,181 @@ canvas{width:100%!important;height:180px!important}
 <div class="modal" id="expenseModal"><div class="sheet"><div class="sheethead"><h3 data-i18n="addExpense">បន្ថែមចំណាយ</h3><button class="x" onclick="closeModal('expenseModal')">✕</button></div><label data-i18n="expenseName">ឈ្មោះចំណាយ</label><input class="field" id="eName"><label data-i18n="amountUsd">ចំនួន USD</label><input class="field" id="eAmount" type="number" step="0.01"><div class="actions"><button class="btn primary" onclick="saveExpense()" data-i18n="save">រក្សាទុក</button></div></div></div>
 
 <script>
+(function(){
+"use strict";
+const $ = function(id){ return document.getElementById(id); };
 const T={
  km:{tagline:"ឧបករណ៍សាមញ្ញ អាជីវកម្មកាន់តែធំ",welcome:"សួស្តី 👋",welcomeSub:"គ្រប់គ្រងហាងរបស់អ្នកឲ្យងាយស្រួល",todaySales:"ការលក់ថ្ងៃនេះ",grossProfit:"ចំណេញដុល",todayExpenses:"ចំណាយថ្ងៃនេះ",netProfit:"ចំណេញសុទ្ធ",quickActions:"សកម្មភាពរហ័ស",newSale:"+ លក់ថ្មី",addProduct:"+ បន្ថែមទំនិញ",addExpense:"+ ចំណាយ",lowStock:"ទំនិញជិតអស់",recentSales:"ការលក់ថ្មីៗ",inventory:"ស្តុកទំនិញ",sales:"ការលក់",reports:"របាយការណ៍",settings:"ការកំណត់",home:"ទំព័រដើម",product:"ទំនិញ",productName:"ឈ្មោះទំនិញ",cost:"ថ្លៃដើម USD",price:"តម្លៃលក់ USD",stock:"ស្តុក",lowAt:"ជូនដំណឹងនៅ",category:"ប្រភេទ",save:"រក្សាទុក",qty:"ចំនួន",payment:"ការទូទាត់",confirmSale:"បញ្ជាក់ការលក់",totalRevenue:"ចំណូលសរុប",expenses:"ចំណាយ",topProducts:"ទំនិញលក់ដាច់",exchangeRate:"អត្រាប្តូរ 1 USD = KHR",shopName:"ឈ្មោះហាង",qrNotice:"KHQR ក្នុងកំណែឥតគិតថ្លៃនេះត្រូវបញ្ជាក់ការទូទាត់ដោយដៃ។ មិនរក្សាទុកពាក្យសម្ងាត់ធនាគារ។",removeQR:"លុប QR",backup:"បម្រុងទុកទិន្នន័យ",resetDemo:"Reset Demo",install:"របៀបដំឡើង",privacy:"ឯកជនភាព",privacyText:"ទិន្នន័យរបស់ Sabay Shop រក្សាទុកនៅលើឧបករណ៍នេះ។ វាមិនបញ្ជូនទៅម៉ាស៊ីនមេ ឬអ្នកផ្សាយពាណិជ្ជកម្មទេ លុះត្រាតែអ្នក export ដោយខ្លួនឯង។",expenseName:"ឈ្មោះចំណាយ",amountUsd:"ចំនួន USD"},
  en:{tagline:"Simple Tools. Bigger Business.",welcome:"Hello 👋",welcomeSub:"Run your shop more easily every day",todaySales:"Today's sales",grossProfit:"Gross profit",todayExpenses:"Today's expenses",netProfit:"Net profit",quickActions:"Quick actions",newSale:"+ New Sale",addProduct:"+ Add Product",addExpense:"+ Expense",lowStock:"Low stock",recentSales:"Recent sales",inventory:"Inventory",sales:"Sales",reports:"Reports",settings:"Settings",home:"Home",product:"Product",productName:"Product name",cost:"Cost USD",price:"Sale price USD",stock:"Stock",lowAt:"Low-stock alert",category:"Category",save:"Save",qty:"Quantity",payment:"Payment",confirmSale:"Confirm sale",totalRevenue:"Total revenue",expenses:"Expenses",topProducts:"Top products",exchangeRate:"Exchange rate 1 USD = KHR",shopName:"Shop name",qrNotice:"KHQR payments are manually confirmed in this free version. Sabay Shop never stores bank passwords.",removeQR:"Remove QR",backup:"Backup",resetDemo:"Reset Demo",install:"How to install",privacy:"Privacy",privacyText:"Sabay Shop stores data on this device. It is not sent to a server or advertisers unless you export it yourself.",expenseName:"Expense name",amountUsd:"Amount USD"}
 };
-const KEY='sabayShopDataV1';
-const demo=()=>({lang:'km',settings:{rate:4100,shop:'Sabay Shop',qr:''},products:[
-{id:1,name:'ទឹកសុទ្ធ / Water',cost:.18,price:.5,stock:24,low:5,category:'Drinks'},
-{id:2,name:'Coca-Cola',cost:.45,price:.75,stock:18,low:5,category:'Drinks'},
-{id:3,name:'មី / Instant Noodles',cost:.35,price:.6,stock:14,low:4,category:'Food'},
-{id:4,name:'USB-C Cable',cost:2.2,price:4.5,stock:6,low:3,category:'Accessories'}
-],sales:[],expenses:[],customers:[]});
+const KEY="sabayShopDataV2";
+function demo(){return {lang:"km",settings:{rate:4100,shop:"Sabay Shop",qr:""},products:[
+{id:1,name:"ទឹកសុទ្ធ / Water",cost:.18,price:.5,stock:24,low:5,category:"Drinks"},
+{id:2,name:"Coca-Cola",cost:.45,price:.75,stock:18,low:5,category:"Drinks"},
+{id:3,name:"មី / Instant Noodles",cost:.35,price:.6,stock:14,low:4,category:"Food"},
+{id:4,name:"USB-C Cable",cost:2.2,price:4.5,stock:6,low:3,category:"Accessories"}
+],sales:[],expenses:[],customers:[]};}
+function load(){
+  try{
+    const current=localStorage.getItem(KEY);
+    if(current) return JSON.parse(current);
+    const old=localStorage.getItem("sabayShopDataV1");
+    if(old){ const migrated=JSON.parse(old); localStorage.setItem(KEY,JSON.stringify(migrated)); return migrated; }
+  }catch(e){}
+  return demo();
+}
 let data=load(), selectedProduct=null;
-function load(){try{return JSON.parse(localStorage.getItem(KEY))||demo()}catch(e){return demo()}}
-function persist(){localStorage.setItem(KEY,JSON.stringify(data))}
-function money(n){return '$'+Number(n||0).toFixed(2)}
-function dateKey(v){return new Date(v).toISOString().slice(0,10)}
-function today(){return new Date().toISOString().slice(0,10)}
-function tr(k){return (T[data.lang]||T.km)[k]||k}
-function applyLang(){document.documentElement.lang=data.lang;document.querySelectorAll('[data-i18n]').forEach(el=>el.textContent=tr(el.dataset.i18n));document.getElementById('langBtn').textContent=data.lang==='km'?'EN':'ខ្មែរ';document.getElementById('searchProduct').placeholder=data.lang==='km'?'ស្វែងរក...':'Search...'}
-document.getElementById('langBtn').onclick=()=>{data.lang=data.lang==='km'?'en':'km';persist();applyLang();renderAll()}
-document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(b.dataset.page).classList.add('active');renderAll()})
-function openModal(id){document.getElementById(id).classList.add('show')} function closeModal(id){document.getElementById(id).classList.remove('show')}
-function openProduct(p){document.getElementById('pId').value=p?.id||'';document.getElementById('pName').value=p?.name||'';document.getElementById('pCost').value=p?.cost??'';document.getElementById('pPrice').value=p?.price??'';document.getElementById('pStock').value=p?.stock??'';document.getElementById('pLow').value=p?.low??5;document.getElementById('pCategory').value=p?.category||'';openModal('productModal')}
-function saveProduct(){const id=Number(document.getElementById('pId').value)||Date.now();const p={id,name:pName.value.trim(),cost:Number(pCost.value),price:Number(pPrice.value),stock:Number(pStock.value),low:Number(pLow.value||5),category:pCategory.value.trim()};if(!p.name||p.price<0||p.stock<0)return alert('Please check product information');const i=data.products.findIndex(x=>x.id===id);if(i>=0)data.products[i]=p;else data.products.push(p);persist();closeModal('productModal');renderAll()}
-function delProduct(id){if(confirm('Delete this product?')){data.products=data.products.filter(x=>x.id!==id);persist();renderAll()}}
-function renderInventory(){const q=(searchProduct.value||'').toLowerCase();const arr=data.products.filter(p=>(p.name+' '+p.category).toLowerCase().includes(q));inventoryList.innerHTML=arr.length?arr.map(p=>`<div class="row"><div><div class="title">${esc(p.name)}</div><div class="muted">${esc(p.category||'')} • ${money(p.price)}</div></div><div class="right"><span class="pill ${p.stock<=p.low?'low':'ok'}">${p.stock}</span><div style="margin-top:7px"><button class="btn secondary" onclick='openProduct(${JSON.stringify(p)})'>✏️</button> <button class="btn danger" onclick="delProduct(${p.id})">🗑</button></div></div></div>`).join(''):'<div class="empty">No products</div>'}
-function openSale(){selectedProduct=null;saleProducts.innerHTML=data.products.filter(p=>p.stock>0).map(p=>`<button class="product-btn" data-id="${p.id}" onclick="chooseProduct(${p.id},this)"><b>${esc(p.name)}</b><br><span class="muted">${money(p.price)} • stock ${p.stock}</span></button>`).join('')||'<div class="empty">Add products first</div>';saleQty.value=1;updateSaleTotal();salePay.value='Cash USD';saleQR.style.display='none';openModal('saleModal')}
-function chooseProduct(id,el){selectedProduct=data.products.find(p=>p.id===id);document.querySelectorAll('.product-btn').forEach(x=>x.classList.remove('sel'));el.classList.add('sel');updateSaleTotal()}
-saleQty.oninput=updateSaleTotal;salePay.onchange=()=>{saleQR.style.display=salePay.value==='KHQR'&&data.settings.qr?'block':'none';if(data.settings.qr)saleQR.src=data.settings.qr}
-function updateSaleTotal(){const qty=Math.max(1,Number(saleQty.value||1));const total=selectedProduct?selectedProduct.price*qty:0;saleTotal.textContent=money(total)+'  •  '+Math.round(total*data.settings.rate).toLocaleString()+'៛'}
-function completeSale(){if(!selectedProduct)return alert('Choose a product');const qty=Math.max(1,Number(saleQty.value||1));if(qty>selectedProduct.stock)return alert('Not enough stock');selectedProduct.stock-=qty;data.sales.push({id:Date.now(),productId:selectedProduct.id,name:selectedProduct.name,qty,price:selectedProduct.price,cost:selectedProduct.cost,total:selectedProduct.price*qty,profit:(selectedProduct.price-selectedProduct.cost)*qty,payment:salePay.value,createdAt:new Date().toISOString()});persist();closeModal('saleModal');renderAll();alert('✅ Sale recorded')}
-function openExpense(){eName.value='';eAmount.value='';openModal('expenseModal')}
-function saveExpense(){const n=eName.value.trim(),a=Number(eAmount.value);if(!n||!(a>0))return alert('Please check expense');data.expenses.push({id:Date.now(),name:n,amount:a,createdAt:new Date().toISOString()});persist();closeModal('expenseModal');renderAll()}
-function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
-function renderDashboard(){const s=data.sales.filter(x=>dateKey(x.createdAt)===today()),e=data.expenses.filter(x=>dateKey(x.createdAt)===today());const rev=s.reduce((a,x)=>a+x.total,0),gp=s.reduce((a,x)=>a+x.profit,0),ex=e.reduce((a,x)=>a+x.amount,0);todaySales.textContent=money(rev);todayProfit.textContent=money(gp);todayExpenses.textContent=money(ex);netProfit.textContent=money(gp-ex);const lows=data.products.filter(p=>p.stock<=p.low);lowCount.textContent=lows.length;lowList.innerHTML=lows.length?lows.map(p=>`<div class="row"><div><div class="title">${esc(p.name)}</div><div class="muted">${p.stock} left</div></div><span class="pill low">Low</span></div>`).join(''):'<div class="empty">✅ Stock looks good</div>';recentSales.innerHTML=s.slice(-5).reverse().map(x=>`<div class="row"><div><div class="title">${esc(x.name)} × ${x.qty}</div><div class="muted">${x.payment}</div></div><b>${money(x.total)}</b></div>`).join('')||'<div class="empty">No sales today</div>'}
-function renderSales(){salesList.innerHTML=data.sales.slice().reverse().map(x=>`<div class="row"><div><div class="title">${esc(x.name)} × ${x.qty}</div><div class="muted">${new Date(x.createdAt).toLocaleString()} • ${x.payment}</div></div><div class="right"><b>${money(x.total)}</b><div class="muted">+${money(x.profit)}</div></div></div>`).join('')||'<div class="empty">No sales yet</div>'}
-function renderReports(){const rev=data.sales.reduce((a,x)=>a+x.total,0),gp=data.sales.reduce((a,x)=>a+x.profit,0),ex=data.expenses.reduce((a,x)=>a+x.amount,0);reportRevenue.textContent=money(rev);reportGross.textContent=money(gp);reportExpenses.textContent=money(ex);reportNet.textContent=money(gp-ex);const map={};data.sales.forEach(x=>{map[x.name]=(map[x.name]||0)+x.qty});const top=Object.entries(map).sort((a,b)=>b[1]-a[1]).slice(0,5);topProducts.innerHTML=top.length?top.map(([n,q])=>`<div class="row"><b>${esc(n)}</b><span class="pill">${q} sold</span></div>`).join(''):'<div class="empty">No sales yet</div>';expenseList.innerHTML=data.expenses.slice().reverse().map(x=>`<div class="row"><div><b>${esc(x.name)}</b><div class="muted">${new Date(x.createdAt).toLocaleString()}</div></div><b>-${money(x.amount)}</b></div>`).join('')||'<div class="empty">No expenses yet</div>'}
-function renderSettings(){rateInput.value=data.settings.rate;shopNameInput.value=data.settings.shop||'Sabay Shop';if(data.settings.qr){qrPreview.src=data.settings.qr;qrPreview.style.display='block'}else qrPreview.style.display='none'}
-function saveSettings(){data.settings.rate=Math.max(1,Number(rateInput.value||4100));data.settings.shop=shopNameInput.value.trim()||'Sabay Shop';persist();alert('✅ Saved');renderAll()}
-qrFile.onchange=()=>{const f=qrFile.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{data.settings.qr=r.result;persist();renderSettings()};r.readAsDataURL(f)}
-function removeQR(){data.settings.qr='';persist();qrFile.value='';renderSettings()}
-function exportData(){const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='sabay-shop-backup-'+today()+'.json';a.click();URL.revokeObjectURL(a.href)}
-importFile.onchange=()=>{const f=importFile.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const j=JSON.parse(r.result);if(!j.products||!j.settings)throw 0;data=j;persist();applyLang();renderAll();alert('✅ Imported')}catch(e){alert('Invalid backup file')}};r.readAsText(f)}
-function resetDemo(){if(confirm('Reset all Sabay Shop data to demo?')){data=demo();persist();applyLang();renderAll()}}
-function renderAll(){renderDashboard();renderInventory();renderSales();renderReports();renderSettings()}
-applyLang();renderAll();
-if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+function persist(){try{localStorage.setItem(KEY,JSON.stringify(data));}catch(e){alert("Storage is unavailable on this device.");}}
+function money(n){return "$"+Number(n||0).toFixed(2);}
+function dateKey(v){return new Date(v).toISOString().slice(0,10);}
+function today(){return new Date().toISOString().slice(0,10);}
+function tr(k){return (T[data.lang]||T.km)[k]||k;}
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(m){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m];});}
+function applyLang(){
+  document.documentElement.lang=data.lang;
+  document.querySelectorAll("[data-i18n]").forEach(function(el){el.textContent=tr(el.dataset.i18n);});
+  $("langBtn").textContent=data.lang==="km"?"EN":"ខ្មែរ";
+  $("searchProduct").placeholder=data.lang==="km"?"ស្វែងរក...":"Search...";
+}
+$("langBtn").addEventListener("click",function(){
+  data.lang=data.lang==="km"?"en":"km"; persist(); applyLang(); renderAll();
+});
+document.querySelectorAll("nav button").forEach(function(b){
+  b.addEventListener("click",function(){
+    document.querySelectorAll("nav button").forEach(function(x){x.classList.remove("active");});
+    b.classList.add("active");
+    document.querySelectorAll(".page").forEach(function(p){p.classList.remove("active");});
+    $(b.dataset.page).classList.add("active");
+    renderAll();
+  });
+});
+window.openModal=function(id){$(id).classList.add("show");};
+window.closeModal=function(id){$(id).classList.remove("show");};
+window.openProduct=function(p){
+  p=p||null;
+  $("pId").value=p?p.id:"";
+  $("pName").value=p?p.name:"";
+  $("pCost").value=p?p.cost:"";
+  $("pPrice").value=p?p.price:"";
+  $("pStock").value=p?p.stock:"";
+  $("pLow").value=p?p.low:5;
+  $("pCategory").value=p?p.category:"";
+  openModal("productModal");
+};
+window.openProductById=function(id){
+  const p=data.products.find(function(x){return x.id===id;});
+  if(p) openProduct(p);
+};
+window.saveProduct=function(){
+  const id=Number($("pId").value)||Date.now();
+  const p={id:id,name:$("pName").value.trim(),cost:Number($("pCost").value),price:Number($("pPrice").value),stock:Number($("pStock").value),low:Number($("pLow").value||5),category:$("pCategory").value.trim()};
+  if(!p.name || !Number.isFinite(p.cost) || !Number.isFinite(p.price) || !Number.isFinite(p.stock) || p.cost<0 || p.price<0 || p.stock<0){alert("Please check product information");return;}
+  const i=data.products.findIndex(function(x){return x.id===id;});
+  if(i>=0)data.products[i]=p; else data.products.push(p);
+  persist(); closeModal("productModal"); renderAll();
+};
+window.delProduct=function(id){
+  if(confirm("Delete this product?")){data.products=data.products.filter(function(x){return x.id!==id;});persist();renderAll();}
+};
+window.renderInventory=function(){
+  const q=($("searchProduct").value||"").toLowerCase();
+  const arr=data.products.filter(function(p){return (p.name+" "+(p.category||"")).toLowerCase().includes(q);});
+  $("inventoryList").innerHTML=arr.length?arr.map(function(p){
+    return '<div class="row"><div><div class="title">'+esc(p.name)+'</div><div class="muted">'+esc(p.category||"")+' • '+money(p.price)+'</div></div><div class="right"><span class="pill '+(p.stock<=p.low?"low":"ok")+'">'+p.stock+'</span><div style="margin-top:7px"><button class="btn secondary" onclick="openProductById('+p.id+')">✏️</button> <button class="btn danger" onclick="delProduct('+p.id+')">🗑</button></div></div></div>';
+  }).join(""):'<div class="empty">No products</div>';
+};
+window.openSale=function(){
+  selectedProduct=null;
+  $("saleProducts").innerHTML=data.products.filter(function(p){return p.stock>0;}).map(function(p){
+    return '<button class="product-btn" data-id="'+p.id+'" onclick="chooseProduct('+p.id+',this)"><b>'+esc(p.name)+'</b><br><span class="muted">'+money(p.price)+' • stock '+p.stock+'</span></button>';
+  }).join("")||'<div class="empty">Add products first</div>';
+  $("saleQty").value=1; $("salePay").value="Cash USD"; $("saleQR").style.display="none"; updateSaleTotal(); openModal("saleModal");
+};
+window.chooseProduct=function(id,el){
+  selectedProduct=data.products.find(function(p){return p.id===id;})||null;
+  document.querySelectorAll(".product-btn").forEach(function(x){x.classList.remove("sel");});
+  if(el)el.classList.add("sel");
+  updateSaleTotal();
+};
+$("saleQty").addEventListener("input",updateSaleTotal);
+$("salePay").addEventListener("change",function(){
+  const show=$("salePay").value==="KHQR" && data.settings.qr;
+  $("saleQR").style.display=show?"block":"none";
+  if(show)$("saleQR").src=data.settings.qr;
+});
+function updateSaleTotal(){
+  const qty=Math.max(1,Number($("saleQty").value||1));
+  const total=selectedProduct?selectedProduct.price*qty:0;
+  $("saleTotal").textContent=money(total)+"  •  "+Math.round(total*data.settings.rate).toLocaleString()+"៛";
+}
+window.completeSale=function(){
+  if(!selectedProduct){alert("Choose a product");return;}
+  const qty=Math.max(1,Number($("saleQty").value||1));
+  if(qty>selectedProduct.stock){alert("Not enough stock");return;}
+  selectedProduct.stock-=qty;
+  data.sales.push({id:Date.now(),productId:selectedProduct.id,name:selectedProduct.name,qty:qty,price:selectedProduct.price,cost:selectedProduct.cost,total:selectedProduct.price*qty,profit:(selectedProduct.price-selectedProduct.cost)*qty,payment:$("salePay").value,createdAt:new Date().toISOString()});
+  persist(); closeModal("saleModal"); renderAll(); alert("✅ Sale recorded");
+};
+window.openExpense=function(){$("eName").value="";$("eAmount").value="";openModal("expenseModal");};
+window.saveExpense=function(){
+  const n=$("eName").value.trim(),a=Number($("eAmount").value);
+  if(!n || !(a>0)){alert("Please check expense");return;}
+  data.expenses.push({id:Date.now(),name:n,amount:a,createdAt:new Date().toISOString()});
+  persist(); closeModal("expenseModal"); renderAll();
+};
+function renderDashboard(){
+  const s=data.sales.filter(function(x){return dateKey(x.createdAt)===today();});
+  const e=data.expenses.filter(function(x){return dateKey(x.createdAt)===today();});
+  const rev=s.reduce(function(a,x){return a+x.total;},0),gp=s.reduce(function(a,x){return a+x.profit;},0),ex=e.reduce(function(a,x){return a+x.amount;},0);
+  $("todaySales").textContent=money(rev); $("todayProfit").textContent=money(gp); $("todayExpenses").textContent=money(ex); $("netProfit").textContent=money(gp-ex);
+  const lows=data.products.filter(function(p){return p.stock<=p.low;});
+  $("lowCount").textContent=lows.length;
+  $("lowList").innerHTML=lows.length?lows.map(function(p){return '<div class="row"><div><div class="title">'+esc(p.name)+'</div><div class="muted">'+p.stock+' left</div></div><span class="pill low">Low</span></div>';}).join(""):'<div class="empty">✅ Stock looks good</div>';
+  $("recentSales").innerHTML=s.slice(-5).reverse().map(function(x){return '<div class="row"><div><div class="title">'+esc(x.name)+' × '+x.qty+'</div><div class="muted">'+esc(x.payment)+'</div></div><b>'+money(x.total)+'</b></div>';}).join("")||'<div class="empty">No sales today</div>';
+}
+function renderSales(){
+  $("salesList").innerHTML=data.sales.slice().reverse().map(function(x){return '<div class="row"><div><div class="title">'+esc(x.name)+' × '+x.qty+'</div><div class="muted">'+new Date(x.createdAt).toLocaleString()+' • '+esc(x.payment)+'</div></div><div class="right"><b>'+money(x.total)+'</b><div class="muted">+'+money(x.profit)+'</div></div></div>';}).join("")||'<div class="empty">No sales yet</div>';
+}
+function renderReports(){
+  const rev=data.sales.reduce(function(a,x){return a+x.total;},0),gp=data.sales.reduce(function(a,x){return a+x.profit;},0),ex=data.expenses.reduce(function(a,x){return a+x.amount;},0);
+  $("reportRevenue").textContent=money(rev); $("reportGross").textContent=money(gp); $("reportExpenses").textContent=money(ex); $("reportNet").textContent=money(gp-ex);
+  const map={}; data.sales.forEach(function(x){map[x.name]=(map[x.name]||0)+x.qty;});
+  const top=Object.entries(map).sort(function(a,b){return b[1]-a[1];}).slice(0,5);
+  $("topProducts").innerHTML=top.length?top.map(function(item){return '<div class="row"><b>'+esc(item[0])+'</b><span class="pill">'+item[1]+' sold</span></div>';}).join(""):'<div class="empty">No sales yet</div>';
+  $("expenseList").innerHTML=data.expenses.slice().reverse().map(function(x){return '<div class="row"><div><b>'+esc(x.name)+'</b><div class="muted">'+new Date(x.createdAt).toLocaleString()+'</div></div><b>-'+money(x.amount)+'</b></div>';}).join("")||'<div class="empty">No expenses yet</div>';
+}
+function renderSettings(){
+  $("rateInput").value=data.settings.rate;
+  $("shopNameInput").value=data.settings.shop||"Sabay Shop";
+  if(data.settings.qr){$("qrPreview").src=data.settings.qr;$("qrPreview").style.display="block";}else{$("qrPreview").style.display="none";}
+}
+window.saveSettings=function(){
+  data.settings.rate=Math.max(1,Number($("rateInput").value||4100));
+  data.settings.shop=$("shopNameInput").value.trim()||"Sabay Shop";
+  persist(); alert("✅ Saved"); renderAll();
+};
+$("qrFile").addEventListener("change",function(){
+  const f=$("qrFile").files[0]; if(!f)return;
+  const r=new FileReader(); r.onload=function(){data.settings.qr=r.result;persist();renderSettings();}; r.readAsDataURL(f);
+});
+window.removeQR=function(){data.settings.qr="";persist();$("qrFile").value="";renderSettings();};
+window.exportData=function(){
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+  const a=document.createElement("a"); const url=URL.createObjectURL(blob); a.href=url; a.download="sabay-shop-backup-"+today()+".json"; document.body.appendChild(a); a.click(); a.remove(); setTimeout(function(){URL.revokeObjectURL(url);},1000);
+};
+$("importFile").addEventListener("change",function(){
+  const f=$("importFile").files[0]; if(!f)return;
+  const r=new FileReader(); r.onload=function(){try{const j=JSON.parse(r.result);if(!j.products||!j.settings)throw new Error("invalid");data=j;persist();applyLang();renderAll();alert("✅ Imported");}catch(e){alert("Invalid backup file");}}; r.readAsText(f);
+});
+window.resetDemo=function(){if(confirm("Reset all Sabay Shop data to demo?")){data=demo();persist();applyLang();renderAll();}};
+function renderAll(){renderDashboard();renderInventory();renderSales();renderReports();renderSettings();}
+try{applyLang();renderAll();}catch(e){
+  const box=document.createElement("div");box.style.cssText="position:fixed;inset:20px;z-index:9999;background:white;border:2px solid #e31d3b;border-radius:16px;padding:16px;overflow:auto;color:#101b3b";
+  box.innerHTML="<b>Sabay Shop startup error</b><p>"+esc(e.message)+"</p><button onclick='location.reload()' style='padding:10px 14px'>Reload</button>";
+  document.body.appendChild(box);
+}
+if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("./sw.js?v=2").catch(function(){});});}
+})();
 </script>
 </body>
 </html>
