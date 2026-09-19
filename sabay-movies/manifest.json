@@ -1,0 +1,9 @@
+{
+  "name": "Sabay Movies",
+  "short_name": "Sabay Movies",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#08090d",
+  "theme_color": "#08090d",
+  "description": "Movie companion app that opens official Netflix for playback."
+}
