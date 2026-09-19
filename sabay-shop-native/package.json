@@ -1,0 +1,16 @@
+{
+  "name": "sabay-shop-native",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "android:add": "cap add android",
+    "sync": "cap sync android"
+  },
+  "dependencies": {
+    "@capacitor/core": "latest",
+    "@capacitor/android": "latest"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "latest"
+  }
+}
