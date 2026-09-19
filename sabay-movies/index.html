@@ -38,6 +38,16 @@ button{font:inherit}.lang,.pill{background:#111318;color:#fff;border:1px solid v
 <div class="tabs"><button class="pill active" data-tab="all" id="allTab">ទាំងអស់</button><button class="pill" data-tab="fav" id="favTab">ចូលចិត្ត</button></div>
 <div class="section" id="sectionTitle">ពេញនិយម</div>
 <div class="grid" id="grid"></div>
+
+<section style="margin:22px 0 8px">
+  <div class="section">Watch Free Now</div>
+  <div class="grid">
+    <article class="card"><div class="poster" style="background:#365314" data-free="aqz-KE-bpKQ"><div class="type">OPEN MOVIE</div><div class="title">Big Buck Bunny</div><div class="meta">Blender Foundation • Free/Open</div></div><div class="cardbar"><div class="info"><div class="name">Big Buck Bunny</div><div class="genre">Animation • Comedy</div></div></div></article>
+    <article class="card"><div class="poster" style="background:#334155" data-free="iD_MyDbP_ZE"><div class="type">OPEN MOVIE</div><div class="title">Tears of Steel</div><div class="meta">Blender Foundation • Free/Open</div></div><div class="cardbar"><div class="info"><div class="name">Tears of Steel</div><div class="genre">Sci-Fi • Live Action</div></div></div></article>
+    <article class="card"><div class="poster" style="background:#4c1d95" data-free="ePVe9FzuFfQ"><div class="type">OPEN MOVIE</div><div class="title">Elephants Dream</div><div class="meta">Blender Foundation • Free/Open</div></div><div class="cardbar"><div class="info"><div class="name">Elephants Dream</div><div class="genre">Animation • Sci-Fi</div></div></div></article>
+  </div>
+</section>
+
 <div class="notice"><b>Netflix connection</b><br><span id="legal">Sabay Movies មិនចម្លង ទាញយក ឬចាក់ផ្សាយវីដេអូ Netflix ទេ។ ការចូលគណនី និងការចាក់វីដេអូធ្វើឡើងនៅ Netflix ផ្លូវការ។ ត្រូវការគម្រោង Netflix ហើយមាតិកាអាចខុសគ្នាតាមតំបន់។</span></div>
 </main>
 <div class="modal" id="modal"><div class="sheet"><div class="sheetposter" id="sheetPoster"></div><h2 id="sheetTitle"></h2><div class="genre" id="sheetMeta"></div><p class="desc" id="sheetDesc"></p><div class="actions"><a class="primary" id="watch" target="_blank" rel="noopener">▶ Watch on Netflix</a><button class="secondary" id="save">♡ Add favorite</button><button class="close" id="close">Close</button></div></div></div>
@@ -73,7 +83,18 @@ $("#lang").onclick=()=>{lang=lang==="km"?"en":"km";applyLang()};$("#search").oni
 document.querySelectorAll("[data-tab]").forEach(x=>x.onclick=()=>{tab=x.dataset.tab;document.querySelectorAll(".pill").forEach(b=>b.classList.toggle("active",b===x));render()});
 $("#close").onclick=()=>modal.classList.remove("show");modal.onclick=e=>{if(e.target===modal)modal.classList.remove("show")};$("#save").onclick=()=>selected&&toggleFav(selected.id);
 if("serviceWorker" in navigator) navigator.serviceWorker.register("./sw.js").catch(()=>{});
+document.querySelectorAll("[data-free]").forEach(x=>x.onclick=()=>{document.querySelector("#freeFrame").src="https://www.youtube.com/embed/"+x.dataset.free+"?autoplay=1&rel=0";document.querySelector("#freeModal").classList.add("show")});
+document.querySelector("#freeClose").onclick=()=>{document.querySelector("#freeFrame").src="";document.querySelector("#freeModal").classList.remove("show")};
+document.querySelector("#freeModal").onclick=e=>{if(e.target.id==="freeModal"){document.querySelector("#freeFrame").src="";document.querySelector("#freeModal").classList.remove("show")}};
 applyLang();
 </script>
+
+<div class="modal" id="freeModal"><div class="sheet" style="max-width:900px">
+  <div style="position:relative;padding-top:56.25%;border-radius:18px;overflow:hidden;background:#000">
+    <iframe id="freeFrame" title="Free movie player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="position:absolute;inset:0;width:100%;height:100%;border:0"></iframe>
+  </div>
+  <button class="close" id="freeClose" style="width:100%;margin-top:8px">Close</button>
+</div></div>
+
 </body>
 </html>
