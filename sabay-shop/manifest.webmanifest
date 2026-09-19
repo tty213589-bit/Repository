@@ -1,0 +1,26 @@
+{
+  "name": "Sabay Shop",
+  "short_name": "Sabay Shop",
+  "description": "Khmer-first smart cashier and inventory app for Cambodian small businesses.",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f7f8fb",
+  "theme_color": "#e31d3b",
+  "lang": "km",
+  "categories": [
+    "business",
+    "finance",
+    "productivity"
+  ],
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
