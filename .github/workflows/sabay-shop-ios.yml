@@ -1,0 +1,36 @@
+name: Verify Sabay Shop iOS Project
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'sabay-shop-native/**'
+      - '.github/workflows/sabay-shop-ios.yml'
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install dependencies
+        working-directory: sabay-shop-native
+        run: npm install
+      - name: Create iOS project
+        working-directory: sabay-shop-native
+        run: npx cap add ios
+      - name: Sync web app
+        working-directory: sabay-shop-native
+        run: npx cap sync ios
+      - name: Build for iPhone Simulator without signing
+        working-directory: sabay-shop-native
+        run: xcodebuild -project ios/App/App.xcodeproj -scheme App -configuration Debug -sdk iphonesimulator CODE_SIGNING_ALLOWED=NO build
+      - name: Archive iOS project source
+        run: zip -qr Sabay-Shop-iOS-Project.zip sabay-shop-native/ios sabay-shop-native/www sabay-shop-native/capacitor.config.json sabay-shop-native/package.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Sabay-Shop-iOS-Project
+          path: Sabay-Shop-iOS-Project.zip
+          retention-days: 30
