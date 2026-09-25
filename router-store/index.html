@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>NetForge IT Store</title>
+<meta name="description" content="NetForge IT Store — premium routers and networking hardware.">
+<meta name="robots" content="index,follow">
+<meta property="og:title" content="NetForge IT Store">
+<meta property="og:description" content="Premium routers and networking hardware.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23000000'/%3E%3Ctext x='32' y='43' text-anchor='middle' font-family='Arial' font-size='34' font-weight='700' fill='%235ab0e0'%3EN%3C/text%3E%3C/svg%3E">
+<style>
+:root{--bg:#050505;--panel:#0b0b0b;--panel2:#101010;--line:rgba(255,255,255,.08);--muted:rgba(255,255,255,.48);--soft:rgba(255,255,255,.7);--white:#fff;--blue:#5ab0e0;--blue2:#81ccf2;--green:#5de6a9}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;background:#000}
+body{margin:0;background:#000;color:#fff;font-family:Inter,Arial,sans-serif;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+button{font:inherit}
+.container{width:min(1280px,calc(100% - 40px));margin:0 auto}
+.eyebrow{font-family:"Barlow Condensed",sans-serif;font-weight:700;letter-spacing:.22em;text-transform:uppercase;font-size:12px;color:var(--blue)}
+.section-title{font-family:"Barlow Condensed",sans-serif;font-size:clamp(38px,5vw,66px);line-height:.95;text-transform:uppercase;font-weight:900;letter-spacing:-.025em;margin:10px 0 0}
+.subtle{color:var(--muted)}
+.topline{height:1px;background:linear-gradient(90deg,transparent,rgba(90,176,224,.7),transparent);position:absolute;top:0;left:0;right:0}
+header{position:sticky;top:0;z-index:50;height:96px;background:rgba(0,0,0,.82);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
+.header-inner{height:100%;display:flex;align-items:center;justify-content:space-between;gap:26px}
+.brand{display:flex;align-items:center;gap:15px;min-width:max-content}
+.logo-wrap{position:relative;width:64px;height:64px;border-radius:50%;padding:2px;background:conic-gradient(transparent,var(--blue),transparent,var(--blue),transparent);box-shadow:0 0 30px rgba(90,176,224,.16)}
+.logo-core{width:100%;height:100%;border-radius:50%;overflow:hidden;background:radial-gradient(circle at 50% 35%,#173446,#060606 70%);border:1px solid rgba(255,255,255,.14);position:relative}
+.logo-core img{width:100%;height:100%;object-fit:cover;transform:scale(1.08);position:relative;z-index:2}
+.logo-fallback{position:absolute;inset:0;display:grid;place-items:center;font:900 28px "Barlow Condensed";color:var(--blue);z-index:1}
+.brand-copy{line-height:.92}
+.brand-name{font:900 31px "Barlow Condensed";letter-spacing:.11em;text-transform:uppercase}
+.brand-tag{font:700 10px "Barlow Condensed";letter-spacing:.3em;text-transform:uppercase;color:rgba(90,176,224,.75);margin-top:5px}
+nav{display:flex;align-items:center;gap:30px;margin-left:auto}
+nav a{font:600 13px "Barlow Condensed";letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.48);transition:.2s}
+nav a:hover{color:#fff}
+.header-actions{display:flex;align-items:center;gap:8px}
+.icon-btn{width:40px;height:40px;display:grid;place-items:center;color:rgba(255,255,255,.5);border:0;background:transparent;border-radius:8px}
+.icon-btn:hover{color:#fff;background:rgba(255,255,255,.04)}
+.menu-btn{display:none}
+.mobile-menu{display:none;position:absolute;top:96px;left:0;right:0;padding:18px 24px 24px;background:rgba(0,0,0,.97);border-bottom:1px solid var(--line)}
+.mobile-menu.open{display:flex;flex-direction:column;gap:18px}
+.mobile-menu a{font:700 14px "Barlow Condensed";letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.7)}
+.hero{min-height:calc(100vh - 96px);position:relative;display:flex;align-items:center;overflow:hidden;background:#000}
+.hero-media{position:absolute;inset:0;z-index:0}
+.hero-media video{width:100%;height:100%;object-fit:cover;transform:scale(1.045);filter:brightness(.28) saturate(.78) contrast(1.15)}
+.hero-media:before{content:"";position:absolute;inset:0;z-index:2;background:linear-gradient(90deg,rgba(0,0,0,.97) 0%,rgba(0,0,0,.84) 38%,rgba(0,0,0,.42) 69%,rgba(0,0,0,.58) 100%)}
+.hero-media:after{content:"";position:absolute;inset:0;z-index:2;background:linear-gradient(180deg,rgba(0,0,0,.54),transparent 36%,rgba(0,0,0,.85))}
+.hero-line{position:absolute;left:0;top:0;bottom:0;width:3px;z-index:5;background:linear-gradient(180deg,transparent,var(--blue),transparent)}
+.hero-inner{position:relative;z-index:5;display:grid;grid-template-columns:1.02fr .98fr;align-items:center;gap:30px;padding:72px 0 82px}
+.hero-copy{max-width:640px}
+.hero-kicker{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.kicker-line{width:34px;height:1px;background:var(--blue)}
+.hero-kicker span{font:700 12px "Barlow Condensed";letter-spacing:.2em;text-transform:uppercase}
+.hero-kicker .dim{color:rgba(255,255,255,.35)}
+.hero h1{font:900 clamp(54px,7vw,96px)/.86 "Barlow Condensed";letter-spacing:-.03em;text-transform:uppercase;margin:0;text-shadow:0 12px 40px rgba(0,0,0,.6)}
+.hero-desc{max-width:650px;color:rgba(255,255,255,.62);font-size:15px;line-height:1.65;margin:25px 0}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 28px}
+.chip{display:flex;align-items:center;gap:8px;border:1px solid rgba(255,255,255,.12);background:rgba(0,0,0,.45);padding:9px 12px;font:700 11px "Barlow Condensed";letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.7);backdrop-filter:blur(10px)}
+.chip b{color:var(--blue);font-weight:900}
+.buy-row{display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+.price{font:900 42px "Barlow Condensed";letter-spacing:-.02em}
+.rating{font-size:12px;color:rgba(255,255,255,.56)}
+.rating strong{color:#fff}
+.stars{color:var(--blue);letter-spacing:2px;margin-bottom:4px}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 20px;border:1px solid rgba(255,255,255,.14);font:800 13px "Barlow Condensed";letter-spacing:.13em;text-transform:uppercase;transition:.2s}
+.btn-primary{background:var(--blue);border-color:var(--blue);color:#061015;box-shadow:0 0 30px rgba(90,176,224,.16)}
+.btn-primary:hover{background:var(--blue2);transform:translateY(-1px)}
+.btn-ghost{background:rgba(255,255,255,.03);color:#fff}
+.btn-ghost:hover{border-color:rgba(255,255,255,.35);background:rgba(255,255,255,.06)}
+.hero-product{position:relative;display:flex;align-items:center;justify-content:center;min-height:560px}
+.hero-product:before{content:"";position:absolute;width:74%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(90,176,224,.18),rgba(90,176,224,.03) 43%,transparent 67%);filter:blur(4px)}
+.hero-product:after{content:"";position:absolute;width:78%;height:42%;bottom:9%;border-radius:50%;background:radial-gradient(ellipse,rgba(0,0,0,.75),transparent 70%);filter:blur(18px)}
+.hero-product img{position:relative;z-index:3;width:min(520px,95%);object-fit:contain;filter:brightness(1.05) contrast(1.06) drop-shadow(0 35px 70px rgba(0,0,0,.85))}
+.floating-spec{position:absolute;z-index:4;right:3%;bottom:13%;padding:10px 12px;border:1px solid rgba(90,176,224,.3);background:rgba(0,0,0,.64);backdrop-filter:blur(14px)}
+.floating-spec small{display:block;color:rgba(255,255,255,.38);font:600 9px "Barlow Condensed";letter-spacing:.18em;text-transform:uppercase}
+.floating-spec strong{font:800 16px "Barlow Condensed";letter-spacing:.08em;color:var(--blue)}
+.stats{position:relative;z-index:7;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:rgba(3,3,3,.92)}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr)}
+.stat{padding:24px 20px;text-align:center;border-right:1px solid var(--line)}
+.stat:last-child{border-right:0}
+.stat strong{display:block;font:900 30px "Barlow Condensed";letter-spacing:-.02em}
+.stat span{font:600 10px "Barlow Condensed";letter-spacing:.17em;text-transform:uppercase;color:rgba(255,255,255,.38)}
+.section{padding:100px 0}
+.section-head{display:flex;align-items:end;justify-content:space-between;gap:30px;margin-bottom:42px}
+.view-all{font:700 12px "Barlow Condensed";letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.55)}
+.view-all:hover{color:var(--blue)}
+.products{background:linear-gradient(#050505,#080808 55%,#050505)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.card{position:relative;min-height:510px;border:1px solid var(--line);background:linear-gradient(180deg,#111,#090909);overflow:hidden;transition:.25s}
+.card:hover{border-color:rgba(90,176,224,.32);transform:translateY(-3px);box-shadow:0 18px 50px rgba(0,0,0,.28)}
+.card-top{position:absolute;top:16px;left:16px;right:16px;display:flex;justify-content:space-between;align-items:center;z-index:5}
+.badge{padding:5px 8px;background:rgba(90,176,224,.14);border:1px solid rgba(90,176,224,.26);color:var(--blue);font:800 9px "Barlow Condensed";letter-spacing:.14em;text-transform:uppercase}
+.badge.white{color:rgba(255,255,255,.7);background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.12)}
+.card-art{height:270px;display:flex;align-items:center;justify-content:center;padding:48px 35px 20px;background:radial-gradient(circle at 50% 50%,rgba(90,176,224,.06),transparent 58%)}
+.card-art img{max-height:215px;width:100%;object-fit:contain;filter:drop-shadow(0 24px 35px rgba(0,0,0,.75));transition:.35s}
+.card:hover .card-art img{transform:scale(1.055)}
+.card-body{padding:20px 22px 24px;border-top:1px solid rgba(255,255,255,.05)}
+.card-kicker{font:700 10px "Barlow Condensed";letter-spacing:.14em;text-transform:uppercase;color:var(--blue);margin-bottom:7px}
+.card h3{font:800 26px/1 "Barlow Condensed";text-transform:uppercase;margin:0 0 11px;letter-spacing:-.01em}
+.card p{font-size:12.5px;line-height:1.55;color:rgba(255,255,255,.48);min-height:58px;margin:0 0 18px}
+.card-bottom{display:flex;justify-content:space-between;align-items:end;gap:14px}
+.card-price{font:900 28px "Barlow Condensed"}
+.card-link{font:800 11px "Barlow Condensed";letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.7)}
+.card-link:hover{color:var(--blue)}
+.difference{background:#020202;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:48px}
+.feature{background:#080808;padding:36px 30px;min-height:250px}
+.feature-num{font:800 11px "Barlow Condensed";letter-spacing:.2em;color:var(--blue);text-transform:uppercase}
+.feature h3{font:800 30px/1 "Barlow Condensed";text-transform:uppercase;margin:48px 0 13px}
+.feature p{font-size:13px;line-height:1.65;color:rgba(255,255,255,.46);margin:0}
+.hardware{background:linear-gradient(180deg,#070707,#020202)}
+.hardware-row{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:60px}
+.hardware-visual{min-height:470px;display:flex;align-items:center;justify-content:center;position:relative;border:1px solid var(--line);background:radial-gradient(circle at 50% 40%,rgba(90,176,224,.12),transparent 52%),#0a0a0a}
+.hardware-visual:before,.hardware-visual:after{content:"";position:absolute;border:1px solid rgba(90,176,224,.12);border-radius:50%}
+.hardware-visual:before{width:65%;aspect-ratio:1}
+.hardware-visual:after{width:43%;aspect-ratio:1}
+.hardware-visual .nf{position:relative;z-index:3;width:190px;height:190px;border-radius:50%;display:grid;place-items:center;font:900 64px "Barlow Condensed";letter-spacing:.04em;border:1px solid rgba(90,176,224,.28);background:#050505;color:var(--blue);box-shadow:0 0 70px rgba(90,176,224,.16)}
+.hardware-copy h2{font:900 clamp(44px,5vw,72px)/.9 "Barlow Condensed";text-transform:uppercase;letter-spacing:-.025em;margin:12px 0 22px}
+.hardware-copy p{color:rgba(255,255,255,.48);font-size:14px;line-height:1.75;max-width:560px}
+.checks{display:grid;grid-template-columns:1fr 1fr;gap:12px 20px;margin:25px 0 30px}
+.check{font:700 11px "Barlow Condensed";letter-spacing:.11em;text-transform:uppercase;color:rgba(255,255,255,.68)}
+.check:before{content:"✓";color:var(--blue);margin-right:9px}
+.cta{padding:110px 0;text-align:center;background:radial-gradient(circle at 50% 30%,rgba(90,176,224,.14),transparent 38%),#030303}
+.cta h2{font:900 clamp(52px,7vw,92px)/.84 "Barlow Condensed";text-transform:uppercase;letter-spacing:-.03em;margin:12px auto 23px;max-width:940px}
+.cta p{max-width:650px;margin:0 auto 30px;color:rgba(255,255,255,.5);font-size:14px;line-height:1.7}
+footer{background:#000;border-top:1px solid var(--line);padding:60px 0 25px}
+.footer-grid{display:grid;grid-template-columns:1.45fr repeat(3,1fr);gap:45px}
+.footer-brand{font:900 30px "Barlow Condensed";letter-spacing:.12em;text-transform:uppercase}
+.footer-brand span{color:var(--blue)}
+.footer-copy{font-size:12px;line-height:1.7;color:rgba(255,255,255,.38);max-width:320px;margin-top:18px}
+.footer-col h4{font:800 12px "Barlow Condensed";letter-spacing:.17em;text-transform:uppercase;margin:7px 0 18px}
+.footer-col a{display:block;color:rgba(255,255,255,.4);font-size:12px;margin:11px 0}
+.footer-col a:hover{color:#fff}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;gap:20px;border-top:1px solid var(--line);margin-top:50px;padding-top:23px;color:rgba(255,255,255,.25);font:600 9px "Barlow Condensed";letter-spacing:.14em;text-transform:uppercase}
+@media(max-width:980px){
+  header{height:82px}.container{width:min(100% - 28px,1280px)}.logo-wrap{width:54px;height:54px}.brand-name{font-size:25px}.brand-tag{font-size:9px}nav{display:none}.menu-btn{display:grid}.mobile-menu{top:82px}
+  .hero{min-height:auto}.hero-inner{grid-template-columns:1fr;padding:65px 0 55px}.hero-product{min-height:420px;order:-1}.hero-product img{width:min(430px,82%)}.hero-copy{max-width:760px}.hero h1{font-size:clamp(55px,12vw,88px)}
+  .grid{grid-template-columns:repeat(2,1fr)}.feature-grid{grid-template-columns:1fr}.hardware-row{grid-template-columns:1fr}.hardware-visual{min-height:400px}
+  .footer-grid{grid-template-columns:1.5fr 1fr 1fr}
+  .footer-grid .footer-col:last-child{grid-column:2/4}
+}
+@media(max-width:640px){
+  .brand-name{font-size:21px}.brand-tag{letter-spacing:.22em}.logo-wrap{width:48px;height:48px}.header-actions{gap:0}.icon-btn{width:38px;height:38px}
+  .hero-inner{padding-top:38px}.hero-product{min-height:315px}.hero h1{font-size:48px}.hero-desc{font-size:13px}.buy-row{gap:16px}.price{font-size:36px}
+  .stats-grid{grid-template-columns:1fr 1fr}.stat:nth-child(2){border-right:0}.stat:nth-child(-n+2){border-bottom:1px solid var(--line)}
+  .section{padding:72px 0}.section-head{align-items:flex-start;flex-direction:column}.grid{grid-template-columns:1fr}.card{min-height:480px}.feature{min-height:220px}.feature h3{margin-top:34px}
+  .hardware-visual{min-height:320px}.hardware-visual .nf{width:150px;height:150px;font-size:52px}.checks{grid-template-columns:1fr}.cta{padding:80px 0}.footer-grid{grid-template-columns:1fr 1fr}.footer-grid>div:first-child{grid-column:1/-1}.footer-grid .footer-col:last-child{grid-column:auto}.footer-bottom{align-items:flex-start;flex-direction:column}
+}
+</style>
+</head>
+<body>
+<header id="home">
+  <div class="topline"></div>
+  <div class="container header-inner">
+    <a class="brand" href="#home">
+      <div class="logo-wrap"><div class="logo-core"><span class="logo-fallback">N</span><img src="https://99741302-3532-4f65-8f25-2f9d3f51afcd-00-118202wv0yqr7.sisko.replit.dev/attached_assets/photo_2026-07-14_19-05-10_1784037737603.jpg" alt="NetForge dragon" onerror="this.style.display='none'"></div></div>
+      <div class="brand-copy"><div class="brand-name">NetForge</div><div class="brand-tag">IT Store</div></div>
+    </a>
+    <nav>
+      <a href="#products">Products</a>
+      <a href="#products">Configure</a>
+      <a href="#compare">Compare</a>
+      <a href="#support">Support</a>
+    </nav>
+    <div class="header-actions">
+      <a class="icon-btn" href="#products" aria-label="Cart">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+      </a>
+      <button class="icon-btn menu-btn" id="menuBtn" aria-label="Toggle menu">
+        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h16M4 12h16M4 19h16"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu"><a href="#products">Products</a><a href="#products">Configure</a><a href="#compare">Compare</a><a href="#support">Support</a></div>
+</header>
+
+<main>
+<section class="hero">
+  <div class="hero-line"></div>
+  <div class="hero-media"><video src="https://99741302-3532-4f65-8f25-2f9d3f51afcd-00-118202wv0yqr7.sisko.replit.dev/attached_assets/aaaaaaaaaaaaa_1785570262658.MOV" autoplay muted loop playsinline></video></div>
+  <div class="container hero-inner">
+    <div class="hero-copy">
+      <div class="hero-kicker"><span class="kicker-line"></span><span>H</span><span class="dim">· Tri-Band</span></div>
+      <h1>RB3011UiAS-RM<br>MikroTik</h1>
+      <p class="hero-desc">1U rackmount, 10x Gigabit Ethernet, SFP, USB 3.0, LCD, PoE out on port 10, 2x1.4GHz CPU, 1GB RAM, RouterOS L5.</p>
+      <div class="chips"><div class="chip"><b>◉</b> Wi-Fi 7</div><div class="chip"><b>⚡</b> &lt;1ms Latency</div><div class="chip"><b>▣</b> Tri-Band</div></div>
+      <div class="buy-row">
+        <div class="price">$179</div>
+        <div class="rating"><div class="stars">★★★★★</div><strong>4.5</strong> · 0 reviews</div>
+        <a class="btn btn-primary" href="#products">Configure Yours →</a>
+        <a class="btn btn-ghost" href="#products">View Lineup</a>
+      </div>
+    </div>
+    <div class="hero-product">
+      <img src="https://99741302-3532-4f65-8f25-2f9d3f51afcd-00-118202wv0yqr7.sisko.replit.dev/attached_assets/1407-tm_1785596709105.webp" alt="RB3011UiAS-RM MikroTik">
+      <div class="floating-spec"><small>Network Grade</small><strong>RouterOS L5</strong></div>
+    </div>
+  </div>
+</section>
+
+<section class="stats">
+  <div class="container stats-grid">
+    <div class="stat"><strong>6</strong><span>Premium Models</span></div>
+    <div class="stat"><strong>Wi-Fi 7</strong><span>Latest Standard</span></div>
+    <div class="stat"><strong>&lt;1ms</strong><span>Latency Target</span></div>
+    <div class="stat"><strong>4.6/5</strong><span>Avg Rating — Hand-picked</span></div>
+  </div>
+</section>
+
+<section class="section products" id="products">
+  <div class="container">
+    <div class="section-head">
+      <div><div class="eyebrow">Featured Builds</div><h2 class="section-title">Engineered to perform.</h2></div>
+      <a class="view-all" href="#products">View All →</a>
+    </div>
+    <div class="grid">
+      <article class="card">
+        <div class="card-top"><span class="badge">Best Seller</span><span class="badge white">Tri-Band</span></div>
+        <div class="card-art"><img src="https://99741302-3532-4f65-8f25-2f9d3f51afcd-00-118202wv0yqr7.sisko.replit.dev/attached_assets/Archer-GX90_1_normal_1602324103863f_1783994548223_no_bg.png" alt="TP-Link Archer GX90"></div>
+        <div class="card-body"><div class="card-kicker">Gaming Router</div><h3>TP-Link Archer GX90</h3><p>AX6600 Tri-Band WiFi 6 with dedicated gaming band. Built to dominate.</p><div class="card-bottom"><div class="card-price">$299.99</div><a class="card-link" href="#products">Configure →</a></div></div>
+      </article>
+      <article class="card">
+        <div class="card-top"><span class="badge">Pro Best</span><span class="badge white">MikroTik</span></div>
+        <div class="card-art"><img src="https://99741302-3532-4f65-8f25-2f9d3f51afcd-00-118202wv0yqr7.sisko.replit.dev/attached_assets/2267-tm_1785599864974.webp" alt="L009UiGS-RM MikroTik"></div>
+        <div class="card-body"><div class="card-kicker">RouterOS</div><h3>L009UiGS-RM | MikroTik</h3><p>L009 is more than just a router. Up to 4 times faster than RB2011 with a modern ARM CPU and container support.</p><div class="card-bottom"><div class="card-price">$119</div><a class="card-link" href="#products">Configure →</a></div></div>
+      </article>
+      <article class="card">
+        <div class="card-top"><span class="badge">Flagship</span><span class="badge white">Tri-Band</span></div>
+        <div class="card-art"><img src="https://99741302-3532-4f65-8f25-2f9d3f51afcd-00-118202wv0yqr7.sisko.replit.dev/attached_assets/xiaomi-xiaomi-mi-router-ax9000_1783994548225_no_bg.png" alt="Xiaomi AX9000"></div>
+        <div class="card-body"><div class="card-kicker">High Performance</div><h3>Xiaomi AX9000 Tri-Band</h3><p>12 high-gain antennas. 9000 Mbps. Built for the most demanding networks on the planet.</p><div class="card-bottom"><div class="card-price">$449.99</div><a class="card-link" href="#products">Configure →</a></div></div>
+      </article>
+      <article class="card">
+        <div class="card-top"><span class="badge">H 50</span><span class="badge white">MikroTik</span></div>
+        <div class="card-art"><img src="https://99741302-3532-4f65-8f25-2f9d3f51afcd-00-118202wv0yqr7.sisko.replit.dev/attached_assets/1539-tm_1785596425968.webp" alt="hEX S MikroTik"></div>
+        <div class="card-body"><div class="card-kicker">Compact Router</div><h3>hEX S | MikroTik</h3><p>5x Gigabit Ethernet, SFP, Dual Core 880MHz CPU, 256MB RAM, USB, microSD and RouterOS L4.</p><div class="card-bottom"><div class="card-price">$79</div><a class="card-link" href="#products">Configure →</a></div></div>
+      </article>
+      <article class="card">
+        <div class="card-top"><span class="badge">H</span><span class="badge white">Tri-Band</span></div>
+        <div class="card-art"><img src="https://99741302-3532-4f65-8f25-2f9d3f51afcd-00-118202wv0yqr7.sisko.replit.dev/attached_assets/1407-tm_1785596709105.webp" alt="RB3011UiAS-RM MikroTik"></div>
+        <div class="card-body"><div class="card-kicker">Rackmount Router</div><h3>RB3011UiAS-RM | MikroTik</h3><p>1U rackmount, 10x Gigabit Ethernet, SFP, USB 3.0, LCD, PoE out, dual-core CPU and 1GB RAM.</p><div class="card-bottom"><div class="card-price">$179</div><a class="card-link" href="#products">Configure →</a></div></div>
+      </article>
+      <article class="card">
+        <div class="card-top"><span class="badge">H</span><span class="badge white">Wi-Fi 6</span></div>
+        <div class="card-art"><img src="https://99741302-3532-4f65-8f25-2f9d3f51afcd-00-118202wv0yqr7.sisko.replit.dev/attached_assets/tp_link_archer_ax73_vilianov_com_0009.png" alt="AX5400 Dual-Band Wi-Fi 6 Router"></div>
+        <div class="card-body"><div class="card-kicker">Dual-Band</div><h3>AX5400 Wi-Fi 6 Router</h3><p>Enjoy Wi-Fi 6 connectivity for every device with the AX5400 dual-band Gigabit Wi-Fi 6 router.</p><div class="card-bottom"><div class="card-price">$179</div><a class="card-link" href="#products">Configure →</a></div></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section difference" id="compare">
+  <div class="container">
+    <div class="eyebrow">— The NetForge difference</div>
+    <h2 class="section-title">Engineered for extremes.</h2>
+    <div class="feature-grid">
+      <div class="feature"><div class="feature-num">01 / Performance</div><h3>No weak links.</h3><p>Every router is chosen around real networking performance: strong CPUs, reliable radios, clean routing and consistent throughput under load.</p></div>
+      <div class="feature"><div class="feature-num">02 / Selection</div><h3>Only hardware worth running.</h3><p>From MikroTik rackmount gear to high-performance Wi-Fi systems, the lineup focuses on products that make sense for demanding homes and businesses.</p></div>
+      <div class="feature"><div class="feature-num">03 / Control</div><h3>Built to configure.</h3><p>Compare models, choose the right platform and build a network around the speed, coverage and control you actually need.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section hardware">
+  <div class="container hardware-row">
+    <div class="hardware-visual"><div class="nf">NF</div></div>
+    <div class="hardware-copy">
+      <div class="eyebrow">Premium hardware</div>
+      <h2>Networking without compromise.</h2>
+      <p>Standard consumer routers are designed for average workloads. NetForge focuses on hardware for high traffic, multiple devices, stable long sessions and serious control.</p>
+      <div class="checks"><div class="check">Gigabit & multi-gig</div><div class="check">RouterOS options</div><div class="check">Wi-Fi 6 / Wi-Fi 7</div><div class="check">Low latency focus</div><div class="check">Business-ready models</div><div class="check">Hand-picked lineup</div></div>
+      <a class="btn btn-ghost" href="#products">See All Hardware →</a>
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <div class="container">
+    <div class="eyebrow">Ready to upgrade?</div>
+    <h2>Build a network that keeps up.</h2>
+    <p>Choose your next router from the NetForge lineup and start with hardware designed for speed, stability and control.</p>
+    <a class="btn btn-primary" href="#products">Build Your Router →</a>
+  </div>
+</section>
+</main>
+
+<footer id="support">
+  <div class="container">
+    <div class="footer-grid">
+      <div><div class="footer-brand">N <span>NetForge</span></div><div class="footer-copy">Premium networking hardware selected for demanding users, home labs, gaming, offices and professional installations.</div></div>
+      <div class="footer-col"><h4>Shop</h4><a href="#products">All Routers</a><a href="#products">Gaming Series</a><a href="#products">Mesh Systems</a><a href="#products">Enterprise</a></div>
+      <div class="footer-col"><h4>Support</h4><a href="#support">Drivers & Firmware</a><a href="#support">Installation Guides</a><a href="#support">Warranty Info</a><a href="#support">Contact Us</a></div>
+      <div class="footer-col"><h4>NetForge</h4><a href="#home">Home</a><a href="#compare">Why NetForge</a><a href="#support">Privacy Policy</a><a href="#support">Terms of Service</a></div>
+    </div>
+    <div class="footer-bottom"><span>© 2026 NetForge IT Store. All rights reserved.</span><span>Premium networking hardware</span></div>
+  </div>
+</footer>
+
+<script>
+const btn=document.getElementById("menuBtn");
+const menu=document.getElementById("mobileMenu");
+if(btn&&menu){btn.addEventListener("click",()=>menu.classList.toggle("open"));menu.querySelectorAll("a").forEach(a=>a.addEventListener("click",()=>menu.classList.remove("open")))}
+</script>
+</body>
+</html>
